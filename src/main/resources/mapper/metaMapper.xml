@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.site.DAO.metaDao">
+    <sql id="BASE_TABLE">
+        t_metas
+    </sql>
+    <sql id="RELATION_SHIP_TABLE">
+        <include refid="com.example.site.DAO.relationshipDao.BASE_TABLE"/>
+    </sql>
+
+    <sql id="BASE_COLUMNS">
+        m.mid, m.name, m.slug, m.type, m.description, m.sort, m.parent
+    </sql>
+
+    <insert id="addMeta" parameterType="com.example.site.POJO.meta" useGeneratedKeys="true" keyProperty="mid">
+        INSERT INTO
+            <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            name, slug, type, description, sort, parent
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{name}, #{slug}, #{type},#{description}, #{sort}, #{parent}
+        </trim>
+    </insert>
+
+    <delete id="delMetaById">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            mid = #{mid}
+    </delete>
+
+    <update id="updateMeta" parameterType="com.example.site.POJO.meta">
+        UPDATE
+            <include refid="BASE_TABLE"/>
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="slug != null and slug != ''">
+                slug = #{slug},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="sort != null and sort != ''">
+                sort = #{sort},
+            </if>
+            <if test="parent != null and parent != ''">
+                parent = #{parent},
+            </if>
+        </set>
+        WHERE mid = #{mid}
+    </update>
+
+    <select id="getMetaById" resultType="com.example.site.POJO.meta">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS m
+        WHERE
+            m.mid = #{mid}
+    </select>
+
+    <select id="getMetaByCond" resultType="com.example.site.POJO.meta"
+            parameterType="com.example.site.DTO.cond.metaCond">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS m
+        <where>
+            <if test="name != null and name != ''">
+                AND m.name = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                AND m.type = #{type}
+            </if>
+        </where>
+        ORDER BY m.sort
+    </select>
+
+    <select id="getMetasCountByType" resultType="java.lang.Long">
+        SELECT
+            count(*)
+        FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            type = #{type}
+    </select>
+
+    <resultMap id="baseResultMap" type="com.example.site.POJO.meta">
+        <id column="mid" property="mid" />
+        <result column="name" property="name" />
+        <result column="slug" property="slug" />
+        <result column="type" property="type" />
+        <result column="description" property="description" />
+        <result column="sort" property="sort" />
+        <result column="parent" property="parent" />
+    </resultMap>
+
+    <resultMap id="metaDto" type="com.example.site.DTO.metaDto" extends="baseResultMap">
+        <result column="count" property="count" />
+    </resultMap>
+
+    <select id="selectFromSql" resultMap="metaDto" parameterType="Map">
+        select
+            a.*,count(b.cid) as count
+        from
+            <include refid="BASE_TABLE"/> AS a
+        left join
+            <include refid="RELATION_SHIP_TABLE"/> AS b on a.mid = b.mid
+        where a.type = #{type}
+        group by a.mid
+        order by #{order}
+        limit #{limit}
+    </select>
+</mapper>

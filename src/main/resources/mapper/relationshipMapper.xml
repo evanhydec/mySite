@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.site.DAO.relationshipDao">
+    <sql id="BASE_TABLE">
+        t_relationships
+    </sql>
+    <sql id="BASE_COLUMNS">
+        rs.cid,rs.mid
+    </sql>
+
+    <select id="getRelationshipByCid" resultType="com.example.site.POJO.relationship">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS rs
+        WHERE
+            cid = #{cid}
+    </select>
+
+    <select id="getRelationshipByMid" resultType="com.example.site.POJO.relationship">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS rs
+        WHERE
+            mid = #{mid}
+     </select>
+
+    <select id="getCountById" resultType="java.lang.Long">
+        SELECT
+            count(*)
+        FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            cid = #{cid} AND mid = #{mid}
+    </select>
+
+    <update id="updateRelationship" parameterType="com.example.site.POJO.relationship">
+        UPDATE
+            <include refid="BASE_TABLE"/>
+        <set>
+            mid = #{mid}
+        </set>
+        where cid = #{cid}
+    </update>
+
+    <delete id="delRelationshipByMid">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            mid = #{mid}
+    </delete>
+    <delete id="delRelationshipByCid">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            cid = #{cid}
+    </delete>
+    <delete id="delRelationshipById">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            cid = #{cid} AND mid = #{mid}
+    </delete>
+
+    <insert id="addRelationship" parameterType="com.example.site.POJO.relationship">
+        INSERT INTO
+            <include refid="BASE_TABLE"/>
+        (cid,mid)
+        VALUES (#{cid},#{mid})
+    </insert>
+</mapper>

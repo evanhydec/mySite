@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.site.DAO.contentDao">
+    <sql id="BASE_TABLE">
+        t_contents
+    </sql>
+
+    <sql id="TABLE_USER">
+        <include refid="com.example.site.DAO.userDao.BASE_TABLE"/>
+    </sql>
+
+    <sql id="BASE_COLUMNS">
+        c.cid, c.title, c.titlePic, c.slug, c.created, c.modified, c.content, c.authorId,
+        c.type, c.status, c.tags, c.categories, c.hits, c.commentsNum, c.allowComment,
+        c.allowPing, c.allowFeed
+    </sql>
+
+    <sql id="REL_USER_COLUMNS">
+        u.username,
+    </sql>
+
+    <insert id="addArticle" parameterType="com.example.site.POJO.content" useGeneratedKeys="true" keyProperty="cid">
+        INSERT INTO
+            <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            title, titlePic, slug, created, content, authorId,
+            type, status, tags, categories, hits, commentsNum, allowComment,
+            allowPing, allowFeed,
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{title, jdbcType=VARCHAR}, #{titlePic, jdbcType=VARCHAR}, #{slug, jdbcType=VARCHAR}, UNIX_TIMESTAMP(NOW()),
+            #{content, jdbcType=LONGVARCHAR}, #{authorId, jdbcType=INTEGER},
+            #{type, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{tags, jdbcType=VARCHAR},
+            #{categories, jdbcType=VARCHAR}, #{hits, jdbcType=INTEGER}, #{commentsNum, jdbcType=INTEGER},
+            #{allowComment, jdbcType=INTEGER}, #{allowPing, jdbcType=INTEGER}, #{allowFeed, jdbcType=INTEGER},
+        </trim>
+    </insert>
+
+    <delete id="delArticleById">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            cid = #{cid}
+    </delete>
+
+    <update id="updateArticle" parameterType="com.example.site.POJO.content">
+        UPDATE
+            <include refid="BASE_TABLE"/>
+        <set>
+            <if test="title != null">
+                title = #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="titlePic != null">
+                titlePic = #{titlePic, jdbcType=VARCHAR},
+            </if>
+            <if test="slug != null">
+                slug = #{slug, jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content, jdbcType=LONGVARCHAR},
+            </if>
+            modified = UNIX_TIMESTAMP(NOW()),
+            <if test="type != null">
+                type = #{type, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status, jdbcType=VARCHAR},
+            </if>
+            <if test="tags != null">
+                tags = #{tags, jdbcType=VARCHAR},
+            </if>
+            <if test="categories != null">
+                categories = #{categories, jdbcType=VARCHAR},
+            </if>
+            <if test="hits != null">
+                hits = #{hits, jdbcType=INTEGER},
+            </if>
+            <if test="commentsNum != null">
+                commentsNum = #{commentsNum, jdbcType=INTEGER},
+            </if>
+            <if test="allowComment != null">
+                allowComment = #{allowComment, jdbcType=INTEGER},
+            </if>
+            <if test="allowPing != null">
+                allowPing = #{allowPing, jdbcType=INTEGER},
+            </if>
+            <if test="allowFeed != null">
+                allowFeed = #{allowFeed, jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE cid = #{cid, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateArticleCommentCountById" >
+        UPDATE
+            <include refid="BASE_TABLE"/>
+        SET
+            commentsNum = #{commentsNum}
+        WHERE
+            cid = #{cid}
+    </update>
+
+    <select id="getArticleById" resultType="com.example.site.POJO.content">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS c
+        WHERE
+            c.cid = #{cid}
+    </select>
+
+    <select id="getArticlesByCond" resultType="com.example.site.POJO.content"
+            parameterType="com.example.site.DTO.cond.contentCond">
+        SELECT
+        <include refid="BASE_COLUMNS"/>
+        FROM
+        <include refid="BASE_TABLE"/> AS c
+        <where>
+            <if test="tag != null">
+                AND c.tags LIKE CONCAT('%',#{tag, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="category != null">
+                AND c.categories LIKE CONCAT('%',#{category, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="status != null">
+                AND c.status = #{status, jdbcType=VARCHAR}
+            </if>
+            <if test="title != null">
+                AND c.title LIKE CONCAT('%',#{title, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="content != null">
+                AND c.content LIKE CONCAT('%',#{content, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="type != null">
+                AND c.type = #{type, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                AND c.created &gt;= #{startTime, jdbcType=INTEGER}
+            </if>
+            <if test="endTime != null">
+                AND c.created &lt;= #{endTime, jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY c.created DESC
+    </select>
+
+    <select id="getArticleCount" resultType="java.lang.Long">
+        SELECT
+            count(*)
+        FROM
+            <include refid="BASE_TABLE"/>
+    </select>
+
+    <resultMap id="archiveDtoMap" type="com.example.site.DTO.archiveDto">
+        <id column="date" property="date"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="getArchive" resultMap="archiveDtoMap"
+            parameterType="com.example.site.DTO.cond.contentCond">
+        select
+            FROM_UNIXTIME(created, '%Y年%m月') as date,
+            count(*) as count
+        from
+            <include refid="BASE_TABLE"/>
+        <where>
+            type = 'post'
+            and status = 'publish'
+            <if test="startTime != null">
+                AND created &gt;= #{startTime, jdbcType=INTEGER}
+            </if>
+            <if test="endTime != null">
+                AND created &lt;= #{endTime, jdbcType=INTEGER}
+            </if>
+        </where>
+        group by date
+        order by date desc
+    </select>
+
+    <select id="getRecentlyArticle" resultType="com.example.site.POJO.content">
+        SELECT
+            cid, title
+        FROM
+            <include refid="BASE_TABLE"/>
+        ORDER BY created DESC
+    </select>
+
+    <select id="searchArticle" resultType="com.example.site.POJO.content">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS c
+        <where>
+            c.title LIKE CONCAT('%',#{param, jdbcType=VARCHAR},'%')
+            OR
+            c.content LIKE CONCAT('%',#{param, jdbcType=VARCHAR},'%')
+        </where>
+    </select>
+
+
+</mapper>

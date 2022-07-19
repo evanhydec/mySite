@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.site.DAO.logDao">
+    <sql id="BASE_TABLE">
+        t_logs
+    </sql>
+    <sql id="BASE_COLUMNS">
+        l.id, l.action, l.data, l.authorId, l.ip, l.created
+    </sql>
+
+    <insert id="addLog" parameterType="com.example.site.POJO.log">
+        INSERT INTO
+            <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            action, data, authorId, ip, created,
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{action}, #{data},#{authorId},#{ip}, UNIX_TIMESTAMP(NOW()),
+        </trim>
+    </insert>
+
+    <delete id="delLogById">
+        DELETE FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            id = #{id}
+    </delete>
+
+    <select id="getLogs" resultType="com.example.site.POJO.log">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/> AS l
+        ORDER BY l.id DESC
+    </select>
+
+</mapper>

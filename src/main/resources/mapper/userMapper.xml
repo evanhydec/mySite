@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.site.DAO.userDao">
+    <sql id="BASE_TABLE">
+        t_users
+    </sql>
+
+    <sql id="BASE_COLUMNS">
+        uid,username,password,email,homeUrl,screenName,created,activated,logged,groupName
+    </sql>
+
+    <resultMap id="user" type="com.example.site.POJO.user">
+        <id property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="pwd" column="password"/>
+        <result property="email" column="email"/>
+        <result property="homeUrl" column="homeUrl"/>
+        <result property="screenName" column="screenName"/>
+        <result property="created" column="created"/>
+        <result property="activated" column="activated"/>
+        <result property="logged" column="logged"/>
+        <result property="groupName" column="groupName"/>
+    </resultMap>
+    
+    <update id="updateUser" parameterType="com.example.site.POJO.user">
+        UPDATE
+            <include refid="BASE_TABLE"/>
+        <set>
+            <if test="pwd != null and pwd != ''">
+                password = #{pwd},
+            </if>
+            <if test="screenName != null and screenName != ''">
+                screenName = #{screenName},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+    
+    <select id="getUserById" resultMap="user">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/>
+        WHERE
+            uid = #{uid}
+    </select>
+
+    <select id="getUserByCond" resultMap="user" parameterType="com.example.site.DTO.cond.userCond">
+        SELECT
+            <include refid="BASE_COLUMNS"/>
+        FROM
+            <include refid="BASE_TABLE"/>
+        <where>
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+            <if test="pwd != null and pwd != ''">
+                AND password = #{pwd}
+            </if>
+        </where>
+    </select>
+
+</mapper>

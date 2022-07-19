@@ -1,0 +1,1 @@
+docker run -it  -p 80:80 -p 443:443 -v /usr/local/projects/site/webapps:/usr/local/tomcat/webapps -v /usr/local/projects/site/logs:/usr/local/tomcat/logs --name site tomcat:8.5.78 /bin/bash
