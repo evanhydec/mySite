@@ -51,8 +51,8 @@ html[xmlns] .slides {display: block;}
 .flex-direction-nav {*height: 0; z-index:20;}
 .flex-direction-nav a { margin: 0px 0 0; z-index:20; display: block; position: absolute; top: 50%; margin-top:-32px; cursor: pointer; text-indent: -9999px; opacity: 0; -webkit-transition: all 0.2s  ease-in-out 0s; -moz-transition: all 0.2s  ease-in-out 0s; -o-transition: all 0.2s  ease-in-out 0s; transition: all 0.2s  ease-in-out 0s; display:inline-block; width:54px; height:54px;}
 
-.flex-direction-nav .flex-next {background:url("../images/bg-next.png") center no-repeat; background-size:24px 24px; right: -55px; border: 0; }
-.flex-direction-nav .flex-prev {background:url("../images/bg-prev.png") center no-repeat; background-size:24px 24px; left: -55px; border: 0; }
+.flex-direction-nav .flex-next {background:url("../images/next.png") center no-repeat; background-size:24px 24px; right: -55px; border: 0; }
+.flex-direction-nav .flex-prev {background:url("../images/prev.png") center no-repeat; background-size:24px 24px; left: -55px; border: 0; }
 
 .flexslider/*:hover*/ .flex-next {opacity: 1; right:35px; }
 .flexslider/*:hover*/ .flex-prev {opacity: 1; left:35px; }

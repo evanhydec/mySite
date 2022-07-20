@@ -3,7 +3,7 @@ server:
   tomcat:
     accesslog:
       buffered: true
-      directory: /usr/local/tomcat/logs
+      directory: /usr/local/projects/site/logs
       enabled: true
       file-date-format: .yyyy-MM-dd
       pattern: common
@@ -61,9 +61,9 @@ pagehelper:
 
 logging:
   level:
-    com.example.site.DAO: DEBUG
+    com.example.site.DAO: INFO
   file:
-    path: /usr/local/tomcat/log
+    path: /usr/local/projects/site/info-log/
     name: tomcat.log
 
 
