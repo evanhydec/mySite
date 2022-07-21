@@ -57,11 +57,14 @@ public class settingController extends baseController {
                 querys.put(key, join(value));
             });
             optionService.saveOptions(querys);
-
             //刷新设置
             List<option> options = optionService.getOptions();
             if(! CollectionUtils.isEmpty(options)){
-                webConst.initConfig = options.stream().collect(Collectors.toMap(option::getName,option::getValue));
+                HashMap<String, String> map = new HashMap<>();
+                for (option option : options) {
+                    map.put(option.getName(),option.getValue());
+                }
+                webConst.initConfig = map;
             }
             logService.addLog(LogActions.SYS_SETTING.getAction(), GsonUtils.toJsonString(querys), request.getRemoteAddr(), this.user(request).getUid());
             return APIResponse.success();

@@ -20,10 +20,8 @@
     </select>
 
     <select id="getOptions" resultType="com.example.site.POJO.option">
-        SELECT
-            <include refid="BASE_COLUMNS"/>
-        FROM
-            <include refid="BASE_TABLE"/> as o
+        SELECT * FROM
+        <include refid="BASE_TABLE"/> as o
     </select>
 
     <delete id="delOptionByName">

@@ -22,7 +22,7 @@ public class optionServiceImpl implements optionService {
     @Override
     @Cacheable(value = "optionCache", key = "'optionByName_' + #p0")
     public option getOptionByName(String name) {
-        if(StringUtils.isBlank(name))
+        if (StringUtils.isBlank(name))
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         return optionDao.getOptionByName(name);
     }
@@ -40,9 +40,9 @@ public class optionServiceImpl implements optionService {
     }
 
     @Override
-    public void updateOption(String name,String value) {
+    public void updateOption(String name, String value) {
         if (StringUtils.isBlank(name))
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        optionDao.updateOption(new option(name,value));
+        if (value != null && !"".equals(value)) optionDao.updateOption(new option(name, value));
     }
 }

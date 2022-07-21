@@ -61,7 +61,7 @@ pagehelper:
 
 logging:
   level:
-    com.example.site.DAO: INFO
+    com.example.site.DAO: DEBUG
   file:
     path: /usr/local/projects/site/info-log/
     name: tomcat.log
