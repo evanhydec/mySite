@@ -30,11 +30,9 @@ public class homeController extends baseController {
     private contentService contentService;
     @Autowired
     private commentService commentService;
-    @Autowired
-    private siteService siteService;
 
 
-    @ApiIgnore
+    @ApiOperation("blog介绍")
     @GetMapping(value = {"/about", "/about/index"})
     public String getAbout(HttpServletRequest request) {
         this.blogBaseData(request, null);//获取友链
