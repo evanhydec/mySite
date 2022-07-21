@@ -78,18 +78,18 @@
                         <th:block th:unless="${commons.is_empty(attaches)}">
                             <th:block th:each="attach : ${attaches.list}">
                                 <div class="col-md-2 text-center m-t-10">
-                                    <a th:href="${attach.fkey}" target="_blank">
+                                    <a th:href="${attach.key}" target="_blank">
                                         <img class="attach-img"
-                                             th:src="@{${attach.ftype == 'image'}?${attach.fkey}: '/admin/images/attach.png'}"
-                                             th:title="${attach.fname}"/>
+                                             th:src="@{${attach.type == 'image'}?${attach.key}: '/admin/images/attach.png'}"
+                                             th:title="${attach.name}"/>
                                     </a>
                                     <div class="clearfix m-t-10">
                 <span class="attach-text" data-toggle="tooltip" data-placement="top"
-                      th:attr="data-original-title=${attach.fname}"
-                      th:text="${commons.substr(attach.fname, 12)}"></span>
+                      th:attr="data-original-title=${attach.name}"
+                      th:text="${commons.substr(attach.name,12)}"></span>
                                     </div>
                                     <div class="clearfix">
-                                        <button th:attr="url=${attach.fkey}" type="button"
+                                        <button th:attr="url=${attach.key}" type="button"
                                                 class="btn btn-warning btn-sm waves-effect waves-light m-t-5 copy">
                                             <i class="fa fa-copy"></i> <span>复制</span>
                                         </button>
@@ -163,6 +163,7 @@
             }
         });
     }
+
     /*]]>*/
 </script>
 </body>

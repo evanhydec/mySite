@@ -410,7 +410,7 @@ public class TaleUtils {
     }
 
     public static String getFileKey(String name) {
-        String prefix = "/upload/" + DateKit.dateFormat(new Date(), "yyyy/MM");
+        String prefix = "/upload";
         if (!new File(attachController.CLASSPATH + prefix).exists()) {
             new File(attachController.CLASSPATH + prefix).mkdirs();
         }

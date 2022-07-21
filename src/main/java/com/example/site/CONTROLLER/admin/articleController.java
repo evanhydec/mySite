@@ -105,8 +105,7 @@ public class articleController extends baseController {
         contentDomain.setStatus(status);
         contentDomain.setTags(type.equals(Types.ARTICLE.getType()) ? tags : null);
         contentDomain.setCategories(type.equals(Types.ARTICLE.getType()) ? categories : null);
-        contentDomain.setAllowComment(allowComment ? 1 : 0);
-
+        contentDomain.setAllowComment(allowComment?1:0);
         contentService.addArticle(contentDomain);
         return APIResponse.success();
     }
@@ -143,7 +142,7 @@ public class articleController extends baseController {
             @RequestParam(name = "categories", required = false, defaultValue = "默认分类")
                     String categories,
             @ApiParam(name = "allowComment", value = "是否允许评论", required = true)
-            @RequestParam(name = "allowComment", required = true)
+            @RequestParam(name = "allowComment")
                     Boolean allowComment
     ) {
         content contentDomain = new content();
@@ -156,7 +155,7 @@ public class articleController extends baseController {
         contentDomain.setStatus(status);
         contentDomain.setTags(tags);
         contentDomain.setCategories(categories);
-        contentDomain.setAllowComment(allowComment ? 1 : 0);
+        contentDomain.setAllowComment(allowComment?1:0);
         contentService.updateArticle(contentDomain);
         return APIResponse.success();
     }
@@ -185,6 +184,7 @@ public class articleController extends baseController {
     ) {
         content content = contentService.getArticleById(cid);
         request.setAttribute("contents", content);
+        System.out.println("是否允许评论：" + content.getAllowComment());
         metaCond metaCond = new metaCond();
         metaCond.setType(Types.CATEGORY.getType());
         List<meta> categories = metaService.getMetas(metaCond);

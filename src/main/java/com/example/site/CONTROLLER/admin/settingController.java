@@ -69,7 +69,6 @@ public class settingController extends baseController {
             logService.addLog(LogActions.SYS_SETTING.getAction(), GsonUtils.toJsonString(querys), request.getRemoteAddr(), this.user(request).getUid());
             return APIResponse.success();
         } catch (Exception e) {
-            String msg = "保存设置失败";
             return APIResponse.fail(e.getMessage());
         }
     }

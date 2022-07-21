@@ -42,7 +42,8 @@
                 description = #{description},
             </if>
         </set>
-        WHERE
+        <where>
             name = #{name}
+        </where>
     </update>
 </mapper>

@@ -72,7 +72,25 @@
         </set>
     </update>
 
-    <select id="getAttachById" resultType="com.example.site.POJO.attach">
+    <resultMap id="attach" type="com.example.site.POJO.attach">
+        <id property="id" column="id"/>
+        <result property="name" column="fname"/>
+        <result property="type" column="ftype"/>
+        <result property="key" column="fkey"/>
+        <result property="authorId" column="authorId"/>
+        <result property="created" column="created"/>
+    </resultMap>
+
+    <resultMap id="attachDto" type="com.example.site.DTO.attachDto">
+        <id property="id" column="id"/>
+        <result property="name" column="fname"/>
+        <result property="type" column="ftype"/>
+        <result property="key" column="fkey"/>
+        <result property="authorId" column="authorId"/>
+        <result property="created" column="created"/>
+    </resultMap>
+
+    <select id="getAttachById" resultMap="attach">
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMNS"/>
@@ -85,7 +103,7 @@
         WHERE aa.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <select id="getAttaches" resultType="com.example.site.DTO.attachDto">
+    <select id="getAttaches" resultMap="attachDto">
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMNS"/>
