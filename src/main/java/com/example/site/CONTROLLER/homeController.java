@@ -1,26 +1,35 @@
 package com.example.site.CONTROLLER;
 
 
+import com.example.site.CONSTANT.ErrorConstant;
 import com.example.site.CONSTANT.Types;
 import com.example.site.CONSTANT.webConst;
 import com.example.site.DTO.cond.contentCond;
+import com.example.site.EXCEPTION.BusinessException;
 import com.example.site.POJO.comment;
 import com.example.site.POJO.content;
 import com.example.site.SERVICE.comment.commentService;
 import com.example.site.SERVICE.content.contentService;
 import com.example.site.SERVICE.site.siteService;
+import com.example.site.utils.APIResponse;
+import com.example.site.utils.IPKit;
+import com.example.site.utils.PatternKit;
+import com.example.site.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
+import com.vdurmont.emoji.EmojiParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Api("网站首页和关于")
@@ -73,7 +82,7 @@ public class homeController extends baseController {
 
     @ApiOperation("文章内容页")
     @GetMapping(value = "/blog/article/{cid}")
-    public String post(
+    public String detail(
             @ApiParam(name = "cid", value = "文章主键", required = true)
             @PathVariable("cid")
             Integer cid,
@@ -81,14 +90,11 @@ public class homeController extends baseController {
     ) {
         content article = contentService.getArticleById(cid);
         request.setAttribute("article", article);
-        contentCond contentCond = new contentCond();
-        contentCond.setType(Types.ARTICLE.getType());
         this.updateArticleHit(article.getCid(), article.getHits());
         List<comment> commentsPaginator = commentService.getCommentsById(cid);
         request.setAttribute("comments", commentsPaginator);
         request.setAttribute("active", "blog");
         return "site/blog-details";
-
     }
 
     private void updateArticleHit(Integer cid, Integer chits) {
@@ -108,5 +114,92 @@ public class homeController extends baseController {
         }
     }
 
+
+    @ApiOperation("评论功能")
+    @PostMapping(value = "/blog/comment")
+    @ResponseBody
+    public APIResponse comment(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(name = "cid") Integer cid,
+            @RequestParam(name = "coid", required = false) Integer coid,
+            @RequestParam(name = "author", required = false) String author,
+            @RequestParam(name = "mail", required = false) String mail,
+            @RequestParam(name = "url", required = false) String url,
+            @RequestParam(name = "text") String text,
+            @RequestParam(name = "_csrf_token") String _csrf_token
+    ) {
+        String ref = request.getHeader("Referer");
+        //防止攻击
+        if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
+            return APIResponse.fail("访问失败");
+        }
+
+        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
+        if (StringUtils.isBlank(token)) {
+            return APIResponse.fail("访问失败");
+        }
+
+        if (null == cid || StringUtils.isBlank(text)) {
+            return APIResponse.fail("请输入完整后评论");
+        }
+
+        if (StringUtils.isNotBlank(author) && author.length() > 50) {
+            return APIResponse.fail("姓名过长");
+        }
+
+        if (StringUtils.isNotBlank(mail) && !TaleUtils.isEmail(mail)) {
+            return APIResponse.fail("请输入正确的邮箱格式");
+        }
+
+        if (StringUtils.isNotBlank(url) && !PatternKit.isURL(url)) {
+            return APIResponse.fail("请输入正确的URL格式");
+        }
+
+        if (text.length() > 200) {
+            return APIResponse.fail("请输入200个字符以内的评论");
+        }
+
+        String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
+        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
+        if (null != count && count > 0) {
+            return APIResponse.fail("您发表评论太快了，请过会再试");
+        }
+
+        author = TaleUtils.cleanXSS(author);
+        text = TaleUtils.cleanXSS(text);
+
+        author = EmojiParser.parseToAliases(author);
+        text = EmojiParser.parseToAliases(text);
+
+        comment comments = new comment();
+        comments.setAuthor(author);
+        comments.setCid(cid);
+        comments.setIp(request.getRemoteAddr());
+        comments.setUrl(url);
+        comments.setContent(text);
+        comments.setMail(mail);
+        comments.setParent(coid);
+        try {
+            commentService.addComment(comments);
+            cookie("tale_remember_author", URLEncoder.encode(author, "UTF-8"), 7 * 24 * 60 * 60, response);
+            cookie("tale_remember_mail", URLEncoder.encode(mail, "UTF-8"), 7 * 24 * 60 * 60, response);
+            if (StringUtils.isNotBlank(url)) {
+                cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
+            }
+            // 设置对每个文章1分钟可以评论一次
+            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 10);
+
+            return APIResponse.success();
+        } catch (Exception e) {
+            throw BusinessException.withErrorCode(ErrorConstant.Comment.ADD_NEW_COMMENT_FAIL);
+        }
+    }
+
+    private void cookie(String name, String value, int maxAge, HttpServletResponse response) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setSecure(false);
+        response.addCookie(cookie);
+    }
 
 }

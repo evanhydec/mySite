@@ -1,15 +1,15 @@
 package com.example.site.POJO;
 
 public class user {
-    private int uid;
+    private Integer uid;
     private String username;
     private String pwd;
     private String email;
     private String homeUrl;
     private String screenName;
-    private int created;
-    private int activated;
-    private int logged;
+    private Integer created;
+    private Integer activated;
+    private Integer logged;
     private String groupName;
 
     @Override
@@ -28,11 +28,11 @@ public class user {
                 '}';
     }
 
-    public int getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -76,27 +76,27 @@ public class user {
         this.screenName = screenName;
     }
 
-    public int getCreated() {
+    public Integer getCreated() {
         return created;
     }
 
-    public void setCreated(int created) {
+    public void setCreated(Integer created) {
         this.created = created;
     }
 
-    public int getActivated() {
+    public Integer getActivated() {
         return activated;
     }
 
-    public void setActivated(int activated) {
+    public void setActivated(Integer activated) {
         this.activated = activated;
     }
 
-    public int getLogged() {
+    public Integer getLogged() {
         return logged;
     }
 
-    public void setLogged(int logged) {
+    public void setLogged(Integer logged) {
         this.logged = logged;
     }
 

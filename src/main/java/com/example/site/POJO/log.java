@@ -1,12 +1,12 @@
 package com.example.site.POJO;
 
 public class log {
-    private int id;
+    private Integer id;
     private String action;
     private String data;
-    private int authorId;
+    private Integer authorId;
     private String ip;
-    private int created;
+    private Integer created;
 
     @Override
     public String toString() {
@@ -20,11 +20,11 @@ public class log {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,11 +44,11 @@ public class log {
         this.data = data;
     }
 
-    public int getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 
@@ -60,11 +60,23 @@ public class log {
         this.ip = ip;
     }
 
-    public int getCreated() {
+    public Integer getCreated() {
         return created;
     }
 
-    public void setCreated(int created) {
+    public void setCreated(Integer created) {
+        this.created = created;
+    }
+
+    public log() {
+    }
+
+    public log(Integer id, String action, String data, Integer authorId, String ip, Integer created) {
+        this.id = id;
+        this.action = action;
+        this.data = data;
+        this.authorId = authorId;
+        this.ip = ip;
         this.created = created;
     }
 }

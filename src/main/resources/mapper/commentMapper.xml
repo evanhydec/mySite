@@ -31,7 +31,7 @@
         DELETE FROM
             <include refid="BASE_TABLE"/>
         WHERE
-            coid = #{coid, jdbcType=INTEGER}
+            coid = #{coId, jdbcType=INTEGER}
     </delete>
 
     <update id="updateCommentStatus">
@@ -40,7 +40,7 @@
         SET
             status = #{status, jdbcType=VARCHAR}
         WHERE
-            coid = #{coid, jdbcType=INTEGER}
+            coid = #{coId, jdbcType=INTEGER}
     </update>
 
     <select id="getCommentById" resultType="com.example.site.POJO.comment">
@@ -49,7 +49,7 @@
         FROM
             <include refid="BASE_TABLE"/> AS cm
         WHERE
-            cm.coid = #{coid, jdbcType=INTEGER}
+            cm.coid = #{coId, jdbcType=INTEGER}
     </select>
 
     <select id="getCommentsByCid" resultType="com.example.site.POJO.comment">

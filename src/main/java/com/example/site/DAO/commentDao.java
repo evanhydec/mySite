@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 @Mapper
 public interface commentDao {
-    int addComment(comment commentDomain);
+    int addComment(comment comment);
 
     int delComment(@Param("coId") Integer coId);
 

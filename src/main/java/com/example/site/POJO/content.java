@@ -1,23 +1,23 @@
 package com.example.site.POJO;
 
 public class content {
-    private int cid;
+    private Integer cid;
     private String title;
     private String titlePic;
     private String slug;
-    private int created;
-    private int modified;
+    private Integer created;
+    private Integer modified;
     private String content;
-    private int authorId;
+    private Integer authorId;
     private String type;
     private String status;
     private String tags;
     private String categories;
-    private int hits;
-    private int commentsNum;
-    private int allowComment;
-    private int allowPing;
-    private int allowFeed;
+    private Integer hits;
+    private Integer commentsNum;
+    private Integer allowComment;
+    private Integer allowPing;
+    private Integer allowFeed;
 
     @Override
     public String toString() {
@@ -46,7 +46,7 @@ public class content {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
@@ -74,19 +74,19 @@ public class content {
         this.slug = slug;
     }
 
-    public int getCreated() {
+    public Integer getCreated() {
         return created;
     }
 
-    public void setCreated(int created) {
+    public void setCreated(Integer created) {
         this.created = created;
     }
 
-    public int getModified() {
+    public Integer getModified() {
         return modified;
     }
 
-    public void setModified(int modified) {
+    public void setModified(Integer modified) {
         this.modified = modified;
     }
 
@@ -98,11 +98,11 @@ public class content {
         this.content = content;
     }
 
-    public int getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 
@@ -138,43 +138,43 @@ public class content {
         this.categories = categories;
     }
 
-    public int getHits() {
+    public Integer getHits() {
         return hits;
     }
 
-    public void setHits(int hits) {
+    public void setHits(Integer hits) {
         this.hits = hits;
     }
 
-    public int getCommentsNum() {
+    public Integer getCommentsNum() {
         return commentsNum;
     }
 
-    public void setCommentsNum(int commentsNum) {
+    public void setCommentsNum(Integer commentsNum) {
         this.commentsNum = commentsNum;
     }
 
-    public int getAllowComment() {
+    public Integer getAllowComment() {
         return allowComment;
     }
 
-    public void setAllowComment(int allowComment) {
+    public void setAllowComment(Integer allowComment) {
         this.allowComment = allowComment;
     }
 
-    public int getAllowPing() {
+    public Integer getAllowPing() {
         return allowPing;
     }
 
-    public void setAllowPing(int allowPing) {
+    public void setAllowPing(Integer allowPing) {
         this.allowPing = allowPing;
     }
 
-    public int getAllowFeed() {
+    public Integer getAllowFeed() {
         return allowFeed;
     }
 
-    public void setAllowFeed(int allowFeed) {
+    public void setAllowFeed(Integer allowFeed) {
         this.allowFeed = allowFeed;
     }
 }

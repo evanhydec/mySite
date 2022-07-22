@@ -27,6 +27,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!--分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -104,7 +105,7 @@
             <version>2.9.0</version>
         </dependency>
 
-        <!--        七牛-->
+        <!--七牛-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>

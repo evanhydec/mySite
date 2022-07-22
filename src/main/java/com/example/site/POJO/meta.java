@@ -1,14 +1,14 @@
 package com.example.site.POJO;
 
 public class meta {
-    private int mid;
+    private Integer mid;
     private String name;
     private String slug;
     private String type;
     private String contentType;
     private String description;
-    private int sort;
-    private int parent;
+    private Integer sort;
+    private Integer parent;
 
     @Override
     public String toString() {
@@ -28,7 +28,7 @@ public class meta {
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(Integer mid) {
         this.mid = mid;
     }
 
@@ -72,19 +72,19 @@ public class meta {
         this.description = description;
     }
 
-    public int getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
-    public int getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(int parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 }

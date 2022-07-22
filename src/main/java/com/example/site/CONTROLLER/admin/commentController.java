@@ -43,8 +43,6 @@ public class commentController extends baseController {
                     int limit,
             HttpServletRequest request
     ){
-        user user = this.user(request);
-
         PageInfo<comment> comments = commentService.getCommentsByCond(new commentCond(), page, limit);
         request.setAttribute("comments", comments);
         return "admin/comment_list";
@@ -54,8 +52,8 @@ public class commentController extends baseController {
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse deleteComment(
-            @ApiParam(name = "coid", value = "评论编号", required = true)
-            @RequestParam(name = "coid", required = true)
+            @ApiParam(name = "coId", value = "评论编号", required = true)
+            @RequestParam(name = "coId", required = true)
                     Integer coid
     ){
 
@@ -63,7 +61,6 @@ public class commentController extends baseController {
             comment comment = commentService.getCommentById(coid);
             if (null == comment)
                 throw BusinessException.withErrorCode(ErrorConstant.Comment.COMMENT_NOT_EXIST);
-
             commentService.deleteComment(coid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,8 +74,8 @@ public class commentController extends baseController {
     @PostMapping(value = "/status")
     @ResponseBody
     public APIResponse changeStatus(
-            @ApiParam(name = "coid", value = "评论主键", required = true)
-            @RequestParam(name = "coid", required = true)
+            @ApiParam(name = "coId", value = "评论主键", required = true)
+            @RequestParam(name = "coId", required = true)
                     Integer coid,
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(name = "status", required = true)

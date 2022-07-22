@@ -2,9 +2,9 @@ package com.example.site.POJO;
 
 public class relationship {
     //文章主键编号
-    private int cid;
+    private Integer cid;
     //项目编号
-    private int mid;
+    private Integer mid;
 
     public relationship() {
     }
@@ -22,19 +22,19 @@ public class relationship {
                 '}';
     }
 
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
-    public int getMid() {
+    public Integer getMid() {
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(Integer mid) {
         this.mid = mid;
     }
 }

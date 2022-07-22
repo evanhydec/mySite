@@ -184,7 +184,6 @@ public class articleController extends baseController {
     ) {
         content content = contentService.getArticleById(cid);
         request.setAttribute("contents", content);
-        System.out.println("是否允许评论：" + content.getAllowComment());
         metaCond metaCond = new metaCond();
         metaCond.setType(Types.CATEGORY.getType());
         List<meta> categories = metaService.getMetas(metaCond);

@@ -110,6 +110,7 @@
         </div>
     </div>
 </div>
+
 <div th:replace="admin/footer :: footer"></div>
 <script src="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.6.0/clipboard.min.js"></script>
@@ -120,7 +121,7 @@
     $("#dropzone").dropzone({
         paramName: "file",
         url: "/admin/attach/upload",
-        maxFilesize: 10,
+        maxFilesize: 100,
         init: function () {
             this.on("success", function (file, msg) {
                 if (msg.code !== 'success') {

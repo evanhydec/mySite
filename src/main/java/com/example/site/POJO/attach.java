@@ -1,12 +1,12 @@
 package com.example.site.POJO;
 
 public class attach {
-    private int id;
+    private Integer id;
     private String name;
     private String type;
     private String key;
-    private int authorId;
-    private int created;
+    private Integer authorId;
+    private Integer created;
 
     @Override
     public String toString() {
@@ -20,11 +20,11 @@ public class attach {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,19 +52,19 @@ public class attach {
         this.key = key;
     }
 
-    public int getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 
-    public int getCreated() {
+    public Integer getCreated() {
         return created;
     }
 
-    public void setCreated(int created) {
+    public void setCreated(Integer created) {
         this.created = created;
     }
 }

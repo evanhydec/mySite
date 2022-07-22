@@ -12,4 +12,5 @@ public interface commentService {
     void deleteComment(Integer coId);
     void updateCommentStatus(Integer coId,String status);
     List<comment> getCommentsById(Integer cid);
+    void addComment(comment comment);
 }

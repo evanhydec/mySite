@@ -1,12 +1,12 @@
 package com.example.site.POJO;
 
 public class comment {
-    private int coId;
-    private int cid;
-    private int created;
+    private Integer coId;
+    private Integer cid;
+    private Integer created;
     private String author;
-    private int authorId;
-    private int ownerId;
+    private Integer authorId;
+    private Integer ownerId;
     private String mail;
     private String url;
     private String ip;
@@ -14,7 +14,7 @@ public class comment {
     private String content;
     private String type;
     private String status;
-    private int parent;
+    private Integer parent;
 
     @Override
     public String toString() {
@@ -36,27 +36,27 @@ public class comment {
                 '}';
     }
 
-    public int getCoId() {
+    public Integer getCoId() {
         return coId;
     }
 
-    public void setCoId(int coId) {
+    public void setCoId(Integer coId) {
         this.coId = coId;
     }
 
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
-    public int getCreated() {
+    public Integer getCreated() {
         return created;
     }
 
-    public void setCreated(int created) {
+    public void setCreated(Integer created) {
         this.created = created;
     }
 
@@ -68,19 +68,19 @@ public class comment {
         this.author = author;
     }
 
-    public int getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 
-    public int getOwnerId() {
+    public Integer getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
     }
 
@@ -140,11 +140,11 @@ public class comment {
         this.status = status;
     }
 
-    public int getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(int parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 }

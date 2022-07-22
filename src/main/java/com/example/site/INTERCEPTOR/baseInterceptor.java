@@ -41,6 +41,7 @@ public class baseInterceptor implements HandlerInterceptor {
         LOGGER.info("UserAgent: {}", request.getHeader(USER_AGENT));
         LOGGER.info("用户访问地址: {}, 来路地址: {}", uri, IPKit.getIpAddrByRequest(request));
 
+
         //请求拦截
         user user = TaleUtils.getLoginUser(request);
         if (null == user) {
