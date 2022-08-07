@@ -75,7 +75,7 @@ qiniu:
   serectkey: "2AqwWLBVXuytx-6cHCbAxTBdyZPcVrzHBqXzfstC"
   bucket: "evanhydecblog"
   cdn:
-    url: "http://rfatuy90y.bkt.clouddn.com"
+    url: "http://qiniu.tuffydog.site"
 
 
 
