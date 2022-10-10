@@ -24,7 +24,7 @@ spring:
       #监控统计拦截的filters
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://124.222.224.182:3306/my_site?serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://www.tuffydog.site:3306/my_site?serverTimezone=Asia/Shanghai
       username: root
       password: Fan@13205763766
       #配置初始化大小/最小/最大
