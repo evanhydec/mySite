@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.userDao">
+<mapper namespace="com.juity.blog.DAO.userDao">
     <sql id="BASE_TABLE">
         t_users
     </sql>
@@ -11,7 +11,7 @@
         uid,username,password,email,homeUrl,screenName,created,activated,logged,groupName
     </sql>
 
-    <resultMap id="user" type="com.example.site.POJO.user">
+    <resultMap id="user" type="com.juity.blog.POJO.user">
         <id property="uid" column="uid"/>
         <result property="username" column="username"/>
         <result property="pwd" column="password"/>
@@ -24,7 +24,7 @@
         <result property="groupName" column="groupName"/>
     </resultMap>
     
-    <update id="updateUser" parameterType="com.example.site.POJO.user">
+    <update id="updateUser" parameterType="com.juity.blog.POJO.user">
         UPDATE
             <include refid="BASE_TABLE"/>
         <set>
@@ -50,7 +50,7 @@
             uid = #{uid}
     </select>
 
-    <select id="getUserByCond" resultMap="user" parameterType="com.example.site.DTO.cond.userCond">
+    <select id="getUserByCond" resultMap="user" parameterType="com.juity.blog.DTO.cond.userCond">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM

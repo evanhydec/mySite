@@ -11,6 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="mySite" target="1.8" />
       <module name="site" target="1.8" />
     </bytecodeTargetLevel>
   </component>

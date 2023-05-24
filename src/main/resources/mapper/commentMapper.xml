@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.commentDao">
+<mapper namespace="com.juity.blog.DAO.commentDao">
     <sql id="BASE_TABLE">
         t_comments
     </sql>
@@ -12,7 +12,7 @@
         cm.url, cm.ip, cm.agent, cm.type, cm.status, cm.parent, cm.content
     </sql>
 
-    <insert id="addComment" parameterType="com.example.site.POJO.comment">
+    <insert id="addComment" parameterType="com.juity.blog.POJO.comment">
         INSERT INTO
             <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -43,7 +43,7 @@
             coid = #{coId, jdbcType=INTEGER}
     </update>
 
-    <select id="getCommentById" resultType="com.example.site.POJO.comment">
+    <select id="getCommentById" resultType="com.juity.blog.POJO.comment">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -52,7 +52,7 @@
             cm.coid = #{coId, jdbcType=INTEGER}
     </select>
 
-    <select id="getCommentsByCid" resultType="com.example.site.POJO.comment">
+    <select id="getCommentsByCid" resultType="com.juity.blog.POJO.comment">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -64,8 +64,8 @@
         ORDER BY cm.created
     </select>
 
-    <select id="getCommentsByCond" resultType="com.example.site.POJO.comment"
-            parameterType="com.example.site.DTO.cond.commentCond">
+    <select id="getCommentsByCond" resultType="com.juity.blog.POJO.comment"
+            parameterType="com.juity.blog.DTO.cond.commentCond">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM

@@ -2,19 +2,19 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.metaDao">
+<mapper namespace="com.juity.blog.DAO.metaDao">
     <sql id="BASE_TABLE">
         t_metas
     </sql>
     <sql id="RELATION_SHIP_TABLE">
-        <include refid="com.example.site.DAO.relationshipDao.BASE_TABLE"/>
+        <include refid="com.juity.blog.DAO.relationshipDao.BASE_TABLE"/>
     </sql>
 
     <sql id="BASE_COLUMNS">
         m.mid, m.name, m.slug, m.type, m.description, m.sort, m.parent
     </sql>
 
-    <insert id="addMeta" parameterType="com.example.site.POJO.meta" useGeneratedKeys="true" keyProperty="mid">
+    <insert id="addMeta" parameterType="com.juity.blog.POJO.meta" useGeneratedKeys="true" keyProperty="mid">
         INSERT INTO
             <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -32,7 +32,7 @@
             mid = #{mid}
     </delete>
 
-    <update id="updateMeta" parameterType="com.example.site.POJO.meta">
+    <update id="updateMeta" parameterType="com.juity.blog.POJO.meta">
         UPDATE
             <include refid="BASE_TABLE"/>
         <set>
@@ -58,7 +58,7 @@
         WHERE mid = #{mid}
     </update>
 
-    <select id="getMetaById" resultType="com.example.site.POJO.meta">
+    <select id="getMetaById" resultType="com.juity.blog.POJO.meta">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -67,8 +67,8 @@
             m.mid = #{mid}
     </select>
 
-    <select id="getMetaByCond" resultType="com.example.site.POJO.meta"
-            parameterType="com.example.site.DTO.cond.metaCond">
+    <select id="getMetaByCond" resultType="com.juity.blog.POJO.meta"
+            parameterType="com.juity.blog.DTO.cond.metaCond">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -93,7 +93,7 @@
             type = #{type}
     </select>
 
-    <resultMap id="baseResultMap" type="com.example.site.POJO.meta">
+    <resultMap id="baseResultMap" type="com.juity.blog.POJO.meta">
         <id column="mid" property="mid" />
         <result column="name" property="name" />
         <result column="slug" property="slug" />
@@ -103,7 +103,7 @@
         <result column="parent" property="parent" />
     </resultMap>
 
-    <resultMap id="metaDto" type="com.example.site.DTO.metaDto" extends="baseResultMap">
+    <resultMap id="metaDto" type="com.juity.blog.DTO.metaDto" extends="baseResultMap">
         <result column="count" property="count" />
     </resultMap>
 

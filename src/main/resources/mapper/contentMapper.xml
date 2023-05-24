@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.contentDao">
+<mapper namespace="com.juity.blog.DAO.contentDao">
     <sql id="BASE_TABLE">
         t_contents
     </sql>
 
     <sql id="TABLE_USER">
-        <include refid="com.example.site.DAO.userDao.BASE_TABLE"/>
+        <include refid="com.juity.blog.DAO.userDao.BASE_TABLE"/>
     </sql>
 
     <sql id="BASE_COLUMNS">
@@ -21,7 +21,7 @@
         u.username,
     </sql>
 
-    <insert id="addArticle" parameterType="com.example.site.POJO.content" useGeneratedKeys="true" keyProperty="cid">
+    <insert id="addArticle" parameterType="com.juity.blog.POJO.content" useGeneratedKeys="true" keyProperty="cid">
         INSERT INTO
             <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,7 +45,7 @@
             cid = #{cid}
     </delete>
 
-    <update id="updateArticle" parameterType="com.example.site.POJO.content">
+    <update id="updateArticle" parameterType="com.juity.blog.POJO.content">
         UPDATE
             <include refid="BASE_TABLE"/>
         <set>
@@ -102,7 +102,7 @@
             cid = #{cid}
     </update>
 
-    <select id="getArticleById" resultType="com.example.site.POJO.content">
+    <select id="getArticleById" resultType="com.juity.blog.POJO.content">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -111,8 +111,8 @@
             c.cid = #{cid}
     </select>
 
-    <select id="getArticlesByCond" resultType="com.example.site.POJO.content"
-            parameterType="com.example.site.DTO.cond.contentCond">
+    <select id="getArticlesByCond" resultType="com.juity.blog.POJO.content"
+            parameterType="com.juity.blog.DTO.cond.contentCond">
         SELECT
         <include refid="BASE_COLUMNS"/>
         FROM
@@ -153,13 +153,13 @@
             <include refid="BASE_TABLE"/>
     </select>
 
-    <resultMap id="archiveDtoMap" type="com.example.site.DTO.archiveDto">
+    <resultMap id="archiveDtoMap" type="com.juity.blog.DTO.archiveDto">
         <id column="date" property="date"/>
         <result column="count" property="count"/>
     </resultMap>
 
     <select id="getArchive" resultMap="archiveDtoMap"
-            parameterType="com.example.site.DTO.cond.contentCond">
+            parameterType="com.juity.blog.DTO.cond.contentCond">
         select
             FROM_UNIXTIME(created, '%Y年%m月') as date,
             count(*) as count
@@ -179,7 +179,7 @@
         order by date desc
     </select>
 
-    <select id="getRecentlyArticle" resultType="com.example.site.POJO.content">
+    <select id="getRecentlyArticle" resultType="com.juity.blog.POJO.content">
         SELECT
             cid, title
         FROM
@@ -187,7 +187,7 @@
         ORDER BY created DESC
     </select>
 
-    <select id="searchArticle" resultType="com.example.site.POJO.content">
+    <select id="searchArticle" resultType="com.juity.blog.POJO.content">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM

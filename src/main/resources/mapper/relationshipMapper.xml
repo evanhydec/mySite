@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.relationshipDao">
+<mapper namespace="com.juity.blog.DAO.relationshipDao">
     <sql id="BASE_TABLE">
         t_relationships
     </sql>
@@ -10,7 +10,7 @@
         rs.cid,rs.mid
     </sql>
 
-    <select id="getRelationshipByCid" resultType="com.example.site.POJO.relationship">
+    <select id="getRelationshipByCid" resultType="com.juity.blog.POJO.relationship">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -19,7 +19,7 @@
             cid = #{cid}
     </select>
 
-    <select id="getRelationshipByMid" resultType="com.example.site.POJO.relationship">
+    <select id="getRelationshipByMid" resultType="com.juity.blog.POJO.relationship">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -37,7 +37,7 @@
             cid = #{cid} AND mid = #{mid}
     </select>
 
-    <update id="updateRelationship" parameterType="com.example.site.POJO.relationship">
+    <update id="updateRelationship" parameterType="com.juity.blog.POJO.relationship">
         UPDATE
             <include refid="BASE_TABLE"/>
         <set>
@@ -65,7 +65,7 @@
             cid = #{cid} AND mid = #{mid}
     </delete>
 
-    <insert id="addRelationship" parameterType="com.example.site.POJO.relationship">
+    <insert id="addRelationship" parameterType="com.juity.blog.POJO.relationship">
         INSERT INTO
             <include refid="BASE_TABLE"/>
         (cid,mid)

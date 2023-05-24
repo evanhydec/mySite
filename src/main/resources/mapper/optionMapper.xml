@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.optionDao">
+<mapper namespace="com.juity.blog.DAO.optionDao">
     <sql id="BASE_TABLE">
         t_options
     </sql>
@@ -10,7 +10,7 @@
         o.name, o.value,o.description
     </sql>
 
-    <select id="getOptionByName" resultType="com.example.site.POJO.option">
+    <select id="getOptionByName" resultType="com.juity.blog.POJO.option">
         SELECT
             <include refid="BASE_COLUMNS"/>
         FROM
@@ -19,7 +19,7 @@
             name = #{name}
     </select>
 
-    <select id="getOptions" resultType="com.example.site.POJO.option">
+    <select id="getOptions" resultType="com.juity.blog.POJO.option">
         SELECT * FROM
         <include refid="BASE_TABLE"/> as o
     </select>

@@ -2,14 +2,14 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.site.DAO.attachDao">
+<mapper namespace="com.juity.blog.DAO.attachDao">
 
     <sql id="BASE_TABLE">
         t_attach
     </sql>
 
     <sql id="TABLE_USER">
-        <include refid="com.example.site.DAO.userDao.BASE_TABLE"/>
+        <include refid="com.juity.blog.DAO.userDao.BASE_TABLE"/>
     </sql>
 
     <sql id="BASE_COLUMNS">
@@ -21,7 +21,7 @@
         u.username,
     </sql>
 
-    <insert id="addAttach" parameterType="com.example.site.POJO.attach">
+    <insert id="addAttach" parameterType="com.juity.blog.POJO.attach">
         INSERT INTO
             <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -55,7 +55,7 @@
             id = #{id, jdbcType=INTEGER}
     </delete>
 
-    <update id="updateAttach" parameterType="com.example.site.POJO.attach">
+    <update id="updateAttach" parameterType="com.juity.blog.POJO.attach">
         UPDATE
             <include refid="BASE_TABLE"/>
         <set>
@@ -72,7 +72,7 @@
         </set>
     </update>
 
-    <resultMap id="attach" type="com.example.site.POJO.attach">
+    <resultMap id="attach" type="com.juity.blog.POJO.attach">
         <id property="id" column="id"/>
         <result property="name" column="fname"/>
         <result property="type" column="ftype"/>
@@ -81,7 +81,7 @@
         <result property="created" column="created"/>
     </resultMap>
 
-    <resultMap id="attachDto" type="com.example.site.DTO.attachDto">
+    <resultMap id="attachDto" type="com.juity.blog.DTO.attachDto">
         <id property="id" column="id"/>
         <result property="name" column="fname"/>
         <result property="type" column="ftype"/>
