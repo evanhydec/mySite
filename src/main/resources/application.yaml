@@ -55,7 +55,7 @@ logging:
   level:
     com.juity.blog.DAO: INFO
   file:
-    name: logs/all.log
+    name: var/log/blog.log
 
 qiniu:
   accesskey: "BaYnS_HE5c4NjVq_r0NxpbNBaQScNRahIVRTYhx3"
