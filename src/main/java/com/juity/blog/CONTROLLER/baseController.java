@@ -5,6 +5,7 @@ import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.DTO.metaDto;
 import com.juity.blog.POJO.user;
+import com.juity.blog.SERVICE.meta.metaService;
 import com.juity.blog.utils.MapCache;
 import com.juity.blog.utils.TaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.List;
 public abstract class baseController {
 
     @Autowired
-    private com.juity.blog.SERVICE.meta.metaService metaService;
+    private metaService metaService;
 
     protected MapCache cache = MapCache.single();
 
@@ -26,8 +27,8 @@ public abstract class baseController {
     }
 
     //获得meta信息
-    public baseController blogBaseData(HttpServletRequest request, contentCond contentCond){
-        List<metaDto> links = metaService.getMetaList(Types.LINK.getType(), null,webConst.MAX_POSTS);
+    public baseController blogBaseData(HttpServletRequest request) {
+        List<metaDto> links = metaService.getMetaList(Types.LINK.getType(), webConst.MAX_POSTS);
         request.setAttribute("links", links);
         return this;
     }

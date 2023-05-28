@@ -7,6 +7,7 @@ import com.juity.blog.CONTROLLER.baseController;
 import com.juity.blog.DTO.cond.metaCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.meta;
+import com.juity.blog.SERVICE.meta.metaService;
 import com.juity.blog.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,23 +21,20 @@ import java.util.List;
 public class linksController extends baseController {
 
     @Autowired
-    private com.juity.blog.SERVICE.meta.metaService metaService;
+    private metaService metaService;
 
     @GetMapping("")
     public String index(HttpServletRequest request) {
-        metaCond metaCond = new metaCond();
-        metaCond.setType(Types.LINK.getType());
-        List<meta> metas = metaService.getMetas(metaCond);
-        request.setAttribute("links", metas);
+        blogBaseData(request);
         return "admin/links";
     }
 
     @PostMapping("/save")
     @ResponseBody
     public APIResponse save(
-            @RequestParam(name = "title", required = true)
+            @RequestParam(name = "title")
                     String title,
-            @RequestParam(name = "url", required = true)
+            @RequestParam(name = "url")
                     String url,
             @RequestParam(name = "logo", required = false)
                     String logo,
@@ -68,7 +66,7 @@ public class linksController extends baseController {
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse delete(
-            @RequestParam(name = "mid", required = true)
+            @RequestParam(name = "mid")
                     int mid
     ) {
         try {

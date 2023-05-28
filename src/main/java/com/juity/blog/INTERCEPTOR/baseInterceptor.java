@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class baseInterceptor implements HandlerInterceptor {
@@ -45,6 +48,7 @@ public class baseInterceptor implements HandlerInterceptor {
         //请求拦截
         user user = TaleUtils.getLoginUser(request);
         if (null == user) {
+            // 看用户是否选择过记住我选项
             Integer uid = TaleUtils.getCookieUid(request);
             if (null != uid) {
                 //这里还是有安全隐患,cookie是可以伪造的
@@ -75,17 +79,17 @@ public class baseInterceptor implements HandlerInterceptor {
         httpServletRequest.setAttribute("commons", commons);
         httpServletRequest.setAttribute("option", ov);
         httpServletRequest.setAttribute("adminCommons", adminCommons);
-        initSiteConfig(httpServletRequest);
+        initSiteConfig();
     }
 
-    private void initSiteConfig(HttpServletRequest request) {
-        if (webConst.initConfig.isEmpty()){
+    private void initSiteConfig() {
+        if (webConst.initConfig.isEmpty()) {
             List<option> options = optionService.getOptions();
-            Map<String, String> query = new HashMap<>();
-            options.forEach(option -> {
-                query.put(option.getName(), option.getValue());
-            });
-            webConst.initConfig = query;
+            if (!CollectionUtils.isEmpty(options)) {
+                HashMap<String, String> query = new HashMap<>();
+                options.forEach(option -> query.put(option.getName(), option.getValue()));
+                webConst.initConfig = query;
+            }
         }
     }
 }

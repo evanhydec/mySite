@@ -36,29 +36,24 @@ public class siteServiceImpl implements siteService {
     private attachDao attachDao;
     @Override
     public List<comment> getComments(int limit) {
-        LOGGER.debug("Enter recentComments method:limit={}", limit);
         if (limit < 0 || limit > 10){
             limit = 10;
         }
         PageHelper.startPage(1, limit);
         List<comment> rs = commentDao.getCommentsByCond(new commentCond());
-        LOGGER.debug("Exit recentComments method");
         return rs;
     }
 
     @Override
     public List<content> getNewArticles(int limit) {
-        LOGGER.debug("Enter recentArticles method:limit={}", limit);
         if (limit < 0 || limit > 10) limit = 10;
         PageHelper.startPage(1, limit);
         List<content> rs = contentDao.getArticlesByCond(new contentCond());
-        LOGGER.debug("Exit recentArticles method");
         return rs;
     }
 
     @Override
     public statisticDto getStatistics() {
-        LOGGER.debug("Enter recentStatistics method");
         //文章总数
         Long artices = contentDao.getArticleCount();
         Long comments = commentDao.getCommentsCount();
@@ -69,7 +64,6 @@ public class siteServiceImpl implements siteService {
         rs.setAttaches(atts);
         rs.setComments(comments);
         rs.setLinks(links);
-        LOGGER.debug("Exit recentStatistics method");
         return rs;
     }
 
@@ -93,10 +87,8 @@ public class siteServiceImpl implements siteService {
     @Override
     @Cacheable(value = "siteCache", key = "'archives_' + #p0")
     public List<archiveDto> getArchives(contentCond contentCond) {
-        LOGGER.debug("Enter getArchives method");
         List<archiveDto> archives = contentDao.getArchive(contentCond);
         parseArchives(archives, contentCond);
-        LOGGER.debug("Exit getArchives method");
         return archives;
     }
 }

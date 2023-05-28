@@ -33,17 +33,13 @@ public class metaServiceImpl implements metaService {
 
     @Override
     @Cacheable(value = "metaCaches", key = "'metaList_' + #p0")
-    public List<metaDto> getMetaList(String type, String orderby, int limit) {
+    public List<metaDto> getMetaList(String type, int limit) {
         if (StringUtils.isNotBlank(type)){
-            if (StringUtils.isBlank(orderby)) {
-                orderby = "count desc, a.mid desc";
-            }
             if (limit < 1 || limit > webConst.MAX_POSTS) {
                 limit = 10;
             }
             Map<String, Object> paraMap = new HashMap<>();
             paraMap.put("type", type);
-            paraMap.put("order", orderby);
             paraMap.put("limit", limit);
             return metaDao.selectFromSql(paraMap);
         }
@@ -119,9 +115,9 @@ public class metaServiceImpl implements metaService {
                 metaDomain.setName(name);
                 if (null != mid){
                     meta meta = metaDao.getMetaById(mid);
-                    if (null != meta) metaDomain.setMid(mid);
-                    metaDao.updateMeta(metaDomain);
-                    if(meta != null) {
+                    if (null != meta) {
+                        metaDomain.setMid(mid);
+                        metaDao.updateMeta(metaDomain);
                         contentService.updateCategory(meta.getName(), name);
                     }
                 } else {

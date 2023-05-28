@@ -9,8 +9,12 @@ import com.juity.blog.POJO.comment;
 import com.juity.blog.POJO.content;
 import com.juity.blog.POJO.log;
 import com.juity.blog.POJO.user;
+import com.juity.blog.SERVICE.log.logService;
+import com.juity.blog.SERVICE.site.siteService;
+import com.juity.blog.SERVICE.user.userService;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.GsonUtils;
+import com.juity.blog.utils.IPKit;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -30,17 +34,16 @@ public class indexController extends baseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(indexController.class);
 
     @Autowired
-    private com.juity.blog.SERVICE.site.siteService siteService;
+    private siteService siteService;
 
     @Autowired
-    private com.juity.blog.SERVICE.log.logService logService;
+    private logService logService;
 
     @Autowired
-    private com.juity.blog.SERVICE.user.userService userService;
+    private userService userService;
 
     @GetMapping("/index")
     public String index(HttpServletRequest request){
-        LOGGER.info("Enter admin index method");
         List<comment> comments = siteService.getComments(5);
         List<content> contents = siteService.getNewArticles(5);
         statisticDto statistics = siteService.getStatistics();
@@ -51,7 +54,6 @@ public class indexController extends baseController {
         request.setAttribute("articles", contents);
         request.setAttribute("statistics", statistics);
         request.setAttribute("logs", list);
-        LOGGER.info("Exit admin index method");
         return "admin/index";
     }
 
@@ -62,7 +64,12 @@ public class indexController extends baseController {
 
     @PostMapping("/profile")
     @ResponseBody
-    public APIResponse saveProfile(@RequestParam String screenName, @RequestParam String email, HttpServletRequest request, HttpSession session) {
+    public APIResponse saveProfile(
+            @RequestParam String screenName,
+            @RequestParam String email,
+            HttpServletRequest request,
+            HttpSession session
+    ) {
         user user = this.user(request);
         if (StringUtils.isNotBlank(screenName) && StringUtils.isNotBlank(email)) {
             user temp = new user();
@@ -70,7 +77,8 @@ public class indexController extends baseController {
             temp.setScreenName(screenName);
             temp.setEmail(email);
             userService.updateUserInfo(temp);
-            logService.addLog(LogActions.UP_INFO.getAction(), GsonUtils.toJsonString(temp), request.getRemoteAddr(), user.getUid());
+            String ip = IPKit.getIpAddrByRequest(request);
+            logService.addLog(LogActions.UP_INFO.getAction(), GsonUtils.toJsonString(temp), ip, user.getUid());
 
             //更新session中的数据
             user original= (user) session.getAttribute(webConst.LOGIN_SESSION_KEY);
@@ -102,7 +110,8 @@ public class indexController extends baseController {
             String pwd = TaleUtils.MD5encode(user.getUsername() + password);
             temp.setPwd(pwd);
             userService.updateUserInfo(temp);
-            logService.addLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), user.getUid());
+            String ip = IPKit.getIpAddrByRequest(request);
+            logService.addLog(LogActions.UP_PWD.getAction(), null, ip, user.getUid());
 
             //更新session中的数据
             user original= (user)session.getAttribute(webConst.LOGIN_SESSION_KEY);

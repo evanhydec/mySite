@@ -18,7 +18,7 @@
         INSERT INTO
             <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            name, slug, type, description, sort, parent
+            name, slug, `type`, description, sort, parent
         </trim>
         <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
             #{name}, #{slug}, #{type},#{description}, #{sort}, #{parent}
@@ -111,12 +111,11 @@
         select
             a.*,count(b.cid) as count
         from
-            <include refid="BASE_TABLE"/> AS a
+            (select * from <include refid="BASE_TABLE"/> where type = #{type}) AS a
         left join
             <include refid="RELATION_SHIP_TABLE"/> AS b on a.mid = b.mid
-        where a.type = #{type}
         group by a.mid
-        order by #{order}
+        order by count desc
         limit #{limit}
     </select>
 </mapper>

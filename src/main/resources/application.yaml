@@ -6,6 +6,9 @@ mybatis:
   type-aliases-package: com.juity.blog.POJO
 
 spring:
+  data:
+    mongodb:
+      uri: mongodb://root:123123@192.168.3.26:27017/test?authSource=admin
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

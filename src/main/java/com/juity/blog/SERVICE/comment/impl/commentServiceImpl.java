@@ -7,6 +7,7 @@ import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.comment;
 import com.juity.blog.POJO.content;
 import com.juity.blog.SERVICE.comment.commentService;
+import com.juity.blog.SERVICE.content.contentService;
 import com.juity.blog.utils.DateKit;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageHelper;
@@ -25,16 +26,9 @@ public class commentServiceImpl implements commentService {
     private commentDao commentDao;
 
     @Autowired
-    private com.juity.blog.SERVICE.content.contentService contentService;
-
-    private static final Map<String, String> STATUS_MAP = new ConcurrentHashMap<>();
+    private contentService contentService;
     private static final String STATUS_NORMAL = "approved";
     private static final String STATUS_BLANK = "not_audit";
-
-    static {
-        STATUS_MAP.put("approved", STATUS_NORMAL);
-        STATUS_MAP.put("not_audit", STATUS_BLANK);
-    }
 
     @Override
     public PageInfo<comment> getCommentsByCond(commentCond commentCond, Integer page, Integer limit) {
@@ -107,7 +101,7 @@ public class commentServiceImpl implements commentService {
             if (null == article)
                 throw BusinessException.withErrorCode("该文章不存在");
             comment.setOwnerId(article.getAuthorId());
-            comment.setStatus(STATUS_MAP.get(STATUS_BLANK));
+            comment.setStatus(STATUS_BLANK);
             comment.setCreated(DateKit.getCurrentUnixTime());
             commentDao.addComment(comment);
 

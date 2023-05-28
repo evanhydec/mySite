@@ -152,7 +152,7 @@ public class TaleUtils {
 
 
     /**
-     * 获取cookie中的用户id
+     * remember_me 会将用户信息通过S_L_ID保存30天
      *
      * @param request
      * @return
@@ -203,7 +203,7 @@ public class TaleUtils {
             boolean isSSL = false;
             Cookie cookie = new Cookie(webConst.USER_IN_COOKIE, val);
             cookie.setPath("/");
-            cookie.setMaxAge(60 * 30);
+            cookie.setMaxAge(30 * 60);
             cookie.setSecure(isSSL);
             response.addCookie(cookie);
         } catch (Exception e) {

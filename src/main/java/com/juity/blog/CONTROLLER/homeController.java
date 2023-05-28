@@ -8,6 +8,8 @@ import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.comment;
 import com.juity.blog.POJO.content;
+import com.juity.blog.SERVICE.comment.commentService;
+import com.juity.blog.SERVICE.content.contentService;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.IPKit;
 import com.juity.blog.utils.PatternKit;
@@ -28,14 +30,16 @@ import java.util.List;
 @Controller
 public class homeController extends baseController {
     @Autowired
-    private com.juity.blog.SERVICE.content.contentService contentService;
+    private contentService contentService;
     @Autowired
-    private com.juity.blog.SERVICE.comment.commentService commentService;
+    private commentService commentService;
 
 
     @GetMapping(value = {"/about", "/about/index"})
     public String getAbout(HttpServletRequest request) {
-        this.blogBaseData(request, null);//获取友链
+        //获取友链
+        this.blogBaseData(request);
+
         request.setAttribute("active", "about");
         return "site/about";
     }
@@ -173,7 +177,6 @@ public class homeController extends baseController {
             }
             // 设置对每个文章1分钟可以评论一次
             cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 10);
-
             return APIResponse.success();
         } catch (Exception e) {
             throw BusinessException.withErrorCode(ErrorConstant.Comment.ADD_NEW_COMMENT_FAIL);

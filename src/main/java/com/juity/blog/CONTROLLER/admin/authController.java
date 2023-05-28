@@ -5,6 +5,8 @@ import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.CONTROLLER.baseController;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.user;
+import com.juity.blog.SERVICE.log.logService;
+import com.juity.blog.SERVICE.user.userService;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.IPKit;
 import com.juity.blog.utils.TaleUtils;
@@ -28,10 +30,10 @@ public class authController extends baseController {
     private static final Logger LOGGER = LogManager.getLogger(authController.class);
 
     @Autowired
-    private com.juity.blog.SERVICE.user.userService userService;
+    private userService userService;
 
     @Autowired
-    private com.juity.blog.SERVICE.log.logService logService;
+    private logService logService;
 
     @GetMapping(value = {"","/login"})
     public String login(){
@@ -43,30 +45,34 @@ public class authController extends baseController {
     public APIResponse toLogin(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(name = "username", required = true)
+            @RequestParam(name = "username")
                     String username,
-            @RequestParam(name = "password", required = true)
+            @RequestParam(name = "password")
                     String password,
             @RequestParam(name = "remeber_me", required = false)
-                    String remeber_me
+                    String rememberMe
     ){
 
-        String ip= IPKit.getIpAddrByRequest(request); // 获取ip并过滤登录时缓存的bug
+        String ip = IPKit.getIpAddrByRequest(request);
         Integer error_count = cache.hget("login_error_count",ip);
+
         try {
+
             user userInfo = userService.login(username, password);
             request.getSession().setAttribute(webConst.LOGIN_SESSION_KEY, userInfo);
-            if (StringUtils.isNotBlank(remeber_me)) {
+            if (StringUtils.isNotBlank(rememberMe)) {
                 TaleUtils.setCookie(response, userInfo.getUid());
             }
-            logService.addLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
+            logService.addLog(LogActions.LOGIN.getAction(), null, ip, userInfo.getUid());
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             error_count = null == error_count ? 1 : error_count + 1;
             if (error_count > 3) {
                 return APIResponse.fail("您输入密码已经错误超过3次，请10分钟后尝试");
             }
-            cache.hset("login_error_count", ip,error_count, 10 * 60); // 加入ip的过滤
+
+            cache.hset("login_error_count", ip,error_count, 10 * 60);
             String msg = "登录失败";
             if (e instanceof BusinessException) {
                 msg = e.getMessage();

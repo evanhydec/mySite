@@ -5,6 +5,7 @@ import com.juity.blog.CONSTANT.Types;
 import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.DTO.metaDto;
 import com.juity.blog.EXCEPTION.BusinessException;
+import com.juity.blog.SERVICE.meta.metaService;
 import com.juity.blog.utils.APIResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +22,12 @@ public class categoryController {
     private static final Logger LOGGER = LoggerFactory.getLogger(categoryController.class);
 
     @Autowired
-    private com.juity.blog.SERVICE.meta.metaService metaService;
+    private metaService metaService;
 
     @GetMapping("")
     public String index(HttpServletRequest request){
-        List<metaDto> categories = metaService.getMetaList(Types.CATEGORY.getType(), null, webConst.MAX_POSTS);
-        List<metaDto> tags = metaService.getMetaList(Types.TAG.getType(), null, webConst.MAX_POSTS);
+        List<metaDto> categories = metaService.getMetaList(Types.CATEGORY.getType(), webConst.MAX_POSTS);
+        List<metaDto> tags = metaService.getMetaList(Types.TAG.getType(), webConst.MAX_POSTS);
         request.setAttribute("categories",categories);
         request.setAttribute("tags",tags);
         return "admin/category";
@@ -35,10 +36,10 @@ public class categoryController {
     @PostMapping(value = "/save")
     @ResponseBody
     public APIResponse addCategory(
-            @RequestParam(name = "cname", required = true)
-                    String cname,
+            @RequestParam(name = "cname")
+            String cname,
             @RequestParam(name = "mid", required = false)
-                    Integer mid
+            Integer mid
     ){
         try {
             metaService.saveMeta(Types.CATEGORY.getType(),cname,mid);
@@ -60,7 +61,7 @@ public class categoryController {
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse delete(
-            @RequestParam(name = "mid", required = true)
+            @RequestParam(name = "mid")
                     Integer mid
     ){
         try {

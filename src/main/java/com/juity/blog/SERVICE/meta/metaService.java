@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface metaService {
-    List<metaDto> getMetaList(String type, String orderBy, int limit);
+    List<metaDto> getMetaList(String type, int limit);
     void addMetas(Integer cid,String names,String type);
     List<meta> getMetas(metaCond metaCond);
     void updateMeta(meta meta);

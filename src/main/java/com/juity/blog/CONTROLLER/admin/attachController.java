@@ -7,10 +7,12 @@ import com.juity.blog.DTO.attachDto;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.attach;
 import com.juity.blog.POJO.user;
+import com.juity.blog.SERVICE.attach.attachService;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.Commons;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
+import com.juity.blog.utils.qiniu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,10 @@ import java.io.IOException;
 @RequestMapping("/admin/attach")
 public class attachController {
     public static final String CLASSPATH = TaleUtils.getUplodFilePath();
-    private static final Logger LOGGER = LoggerFactory.getLogger(attachController.class);
     @Autowired
-    private com.juity.blog.SERVICE.attach.attachService attachService;
+    private attachService attachService;
     @Autowired
-    private com.juity.blog.utils.qiniu qiniu;
+    private qiniu qiniu;
 
 
     @GetMapping("")
@@ -54,7 +55,7 @@ public class attachController {
     public void fileUpLoadToTencentCloud(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(name = "editormd-image-file", required = true)
+            @RequestParam(name = "editormd-image-file")
             MultipartFile file
     ) {
         //文件上传

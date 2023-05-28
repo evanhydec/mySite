@@ -8,8 +8,12 @@ import com.juity.blog.DTO.cond.metaCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.content;
 import com.juity.blog.POJO.meta;
+import com.juity.blog.SERVICE.content.contentService;
+import com.juity.blog.SERVICE.log.logService;
+import com.juity.blog.SERVICE.meta.metaService;
 import com.juity.blog.utils.APIResponse;
 import com.github.pagehelper.PageInfo;
+import com.juity.blog.utils.IPKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,19 +27,19 @@ import java.util.List;
 @Transactional(rollbackFor = BusinessException.class)
 public class articleController extends baseController {
     @Autowired
-    private com.juity.blog.SERVICE.content.contentService contentService;
+    private contentService contentService;
     @Autowired
-    private com.juity.blog.SERVICE.log.logService logService;
+    private logService logService;
     @Autowired
-    private com.juity.blog.SERVICE.meta.metaService metaService;
+    private metaService metaService;
 
     @GetMapping(value = "")
     public String index(
             HttpServletRequest request,
             @RequestParam(name = "page", required = false, defaultValue = "1")
-                    int page,
+            int page,
             @RequestParam(name = "limit", required = false, defaultValue = "15")
-                    int limit
+            int limit
     ) {
         PageInfo<content> articles = contentService.getArticlesByCond(new contentCond(), page, limit);
         request.setAttribute("articles", articles);
@@ -55,25 +59,24 @@ public class articleController extends baseController {
     @PostMapping("/publish")
     @ResponseBody
     public APIResponse SaveArticle(
-            HttpServletRequest request,
-            @RequestParam(name = "title", required = true)
-                    String title,
+            @RequestParam(name = "title")
+            String title,
             @RequestParam(name = "titlePic", required = false)
-                    String titlePic,
+            String titlePic,
             @RequestParam(name = "slug", required = false)
-                    String slug,
-            @RequestParam(name = "content", required = true)
-                    String content,
-            @RequestParam(name = "type", required = true)
-                    String type,
-            @RequestParam(name = "status", required = true)
-                    String status,
+            String slug,
+            @RequestParam(name = "content")
+            String content,
+            @RequestParam(name = "type")
+            String type,
+            @RequestParam(name = "status")
+            String status,
             @RequestParam(name = "tags", required = false)
-                    String tags,
+            String tags,
             @RequestParam(name = "categories", required = false, defaultValue = "默认分类")
-                    String categories,
-            @RequestParam(name = "allowComment", required = true)
-                    Boolean allowComment
+            String categories,
+            @RequestParam(name = "allowComment")
+            Boolean allowComment
     ) {
         content contentDomain = new content();
         contentDomain.setTitle(title);
@@ -84,34 +87,34 @@ public class articleController extends baseController {
         contentDomain.setStatus(status);
         contentDomain.setTags(type.equals(Types.ARTICLE.getType()) ? tags : null);
         contentDomain.setCategories(type.equals(Types.ARTICLE.getType()) ? categories : null);
-        contentDomain.setAllowComment(allowComment?1:0);
+        contentDomain.setAllowComment(allowComment ? 1 : 0);
         contentService.addArticle(contentDomain);
         return APIResponse.success();
     }
 
     @PostMapping("/modify")
     @ResponseBody
-    public APIResponse SaveDraft(
-            @RequestParam(name = "cid", required = true)
-                    Integer cid,
-            @RequestParam(name = "title", required = true)
-                    String title,
+    public APIResponse modify(
+            @RequestParam(name = "cid")
+            Integer cid,
+            @RequestParam(name = "title")
+            String title,
             @RequestParam(name = "titlePic", required = false)
-                    String titlePic,
+            String titlePic,
             @RequestParam(name = "slug", required = false)
-                    String slug,
-            @RequestParam(name = "content", required = true)
-                    String content,
-            @RequestParam(name = "type", required = true)
-                    String type,
-            @RequestParam(name = "status", required = true)
-                    String status,
+            String slug,
+            @RequestParam(name = "content")
+            String content,
+            @RequestParam(name = "type")
+            String type,
+            @RequestParam(name = "status")
+            String status,
             @RequestParam(name = "tags", required = false)
-                    String tags,
+            String tags,
             @RequestParam(name = "categories", required = false, defaultValue = "默认分类")
-                    String categories,
+            String categories,
             @RequestParam(name = "allowComment")
-                    Boolean allowComment
+            Boolean allowComment
     ) {
         content contentDomain = new content();
         contentDomain.setCid(cid);
@@ -123,7 +126,7 @@ public class articleController extends baseController {
         contentDomain.setStatus(status);
         contentDomain.setTags(tags);
         contentDomain.setCategories(categories);
-        contentDomain.setAllowComment(allowComment?1:0);
+        contentDomain.setAllowComment(allowComment ? 1 : 0);
         contentService.updateArticle(contentDomain);
         return APIResponse.success();
     }
@@ -132,18 +135,19 @@ public class articleController extends baseController {
     @ResponseBody
     public APIResponse delete(
             @RequestParam(name = "cid", required = true)
-                    Integer cid,
+            Integer cid,
             HttpServletRequest request
     ) {
+        String ip = IPKit.getIpAddrByRequest(request);
         contentService.delArticleById(cid);
-        logService.addLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.user(request).getUid());
+        logService.addLog(LogActions.DEL_ARTICLE.getAction(), cid + "", ip, this.user(request).getUid());
         return APIResponse.success();
     }
 
     @GetMapping("/{cid}")
     public String edit(
             @PathVariable
-                    Integer cid,
+            Integer cid,
             HttpServletRequest request
     ) {
         content content = contentService.getArticleById(cid);
