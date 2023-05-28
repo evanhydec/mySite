@@ -48,6 +48,7 @@ public class MapCache {
                 Object result = cacheObject.getValue();
                 return (T) result;
             }
+            cachePool.remove(key);
         }
         return null;
     }

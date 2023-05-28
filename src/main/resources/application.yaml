@@ -3,7 +3,7 @@ server:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.site.POJO
+  type-aliases-package: com.juity.blog.POJO
 
 spring:
   datasource:

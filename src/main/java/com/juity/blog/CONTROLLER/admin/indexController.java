@@ -13,8 +13,6 @@ import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.GsonUtils;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Api("后台首页")
 @Controller("adminIndexController")
 @RequestMapping("/admin")
 public class indexController extends baseController {
@@ -41,7 +38,6 @@ public class indexController extends baseController {
     @Autowired
     private com.juity.blog.SERVICE.user.userService userService;
 
-    @ApiOperation("进入首页")
     @GetMapping("/index")
     public String index(HttpServletRequest request){
         LOGGER.info("Enter admin index method");

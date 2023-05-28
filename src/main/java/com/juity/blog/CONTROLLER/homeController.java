@@ -14,9 +14,6 @@ import com.juity.blog.utils.PatternKit;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
 import com.vdurmont.emoji.EmojiParser;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.List;
 
-@Api("网站首页和关于")
 @Controller
 public class homeController extends baseController {
     @Autowired
@@ -37,7 +33,6 @@ public class homeController extends baseController {
     private com.juity.blog.SERVICE.comment.commentService commentService;
 
 
-    @ApiOperation("blog介绍")
     @GetMapping(value = {"/about", "/about/index"})
     public String getAbout(HttpServletRequest request) {
         this.blogBaseData(request, null);//获取友链
@@ -45,18 +40,15 @@ public class homeController extends baseController {
         return "site/about";
     }
 
-    @ApiOperation("blog首页")
     @GetMapping(value = {"/blog", "/blog/index"})
     public String blogIndex(
             HttpServletRequest request,
-            @ApiParam(name = "limit", value = "页数", required = false)
             @RequestParam(name = "limit", required = false, defaultValue = "11")
             int limit
     ) {
         return this.blogIndex(request, 1, limit);
     }
 
-    @ApiOperation("blog首页-分页")
     @GetMapping("/blog/page/{p}")
     public String blogIndex(
             HttpServletRequest request,
@@ -76,10 +68,8 @@ public class homeController extends baseController {
     }
 
 
-    @ApiOperation("文章内容页")
     @GetMapping(value = "/blog/article/{cid}")
     public String detail(
-            @ApiParam(name = "cid", value = "文章主键", required = true)
             @PathVariable("cid")
             Integer cid,
             HttpServletRequest request
@@ -111,7 +101,6 @@ public class homeController extends baseController {
     }
 
 
-    @ApiOperation("评论功能")
     @PostMapping(value = "/blog/comment")
     @ResponseBody
     public APIResponse comment(

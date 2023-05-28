@@ -4,6 +4,8 @@ import com.juity.blog.CONSTANT.Types;
 import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.POJO.option;
 import com.juity.blog.POJO.user;
+import com.juity.blog.SERVICE.option.optionService;
+import com.juity.blog.SERVICE.user.userService;
 import com.juity.blog.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,9 @@ public class baseInterceptor implements HandlerInterceptor {
     private static final String USER_AGENT = "user-agent";
 
     @Autowired
-    private com.juity.blog.SERVICE.option.optionService optionService;
+    private optionService optionService;
     @Autowired
-    private com.juity.blog.SERVICE.user.userService userService;
+    private userService userService;
 
     private Commons commons = new Commons();
     private AdminCommons adminCommons = new AdminCommons();

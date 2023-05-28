@@ -6,9 +6,6 @@ import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.DTO.metaDto;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.utils.APIResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Api("分类")
 @Controller
 @RequestMapping("/admin/category")
 public class categoryController {
@@ -27,7 +23,6 @@ public class categoryController {
     @Autowired
     private com.juity.blog.SERVICE.meta.metaService metaService;
 
-    @ApiOperation("首页")
     @GetMapping("")
     public String index(HttpServletRequest request){
         List<metaDto> categories = metaService.getMetaList(Types.CATEGORY.getType(), null, webConst.MAX_POSTS);
@@ -37,14 +32,11 @@ public class categoryController {
         return "admin/category";
     }
 
-    @ApiOperation("保存分类")
     @PostMapping(value = "/save")
     @ResponseBody
     public APIResponse addCategory(
-            @ApiParam(name = "cname", value = "分类名", required = true)
             @RequestParam(name = "cname", required = true)
                     String cname,
-            @ApiParam(name = "mid", value = "meta编号", required = false)
             @RequestParam(name = "mid", required = false)
                     Integer mid
     ){
@@ -65,11 +57,9 @@ public class categoryController {
         return APIResponse.success();
     }
 
-    @ApiOperation("删除分类")
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse delete(
-            @ApiParam(name = "mid", value = "主键", required = true)
             @RequestParam(name = "mid", required = true)
                     Integer mid
     ){

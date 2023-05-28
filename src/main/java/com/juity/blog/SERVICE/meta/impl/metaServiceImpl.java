@@ -9,6 +9,7 @@ import com.juity.blog.DTO.metaDto;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.meta;
 import com.juity.blog.POJO.relationship;
+import com.juity.blog.SERVICE.content.contentService;
 import com.juity.blog.SERVICE.meta.metaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,8 @@ public class metaServiceImpl implements metaService {
     private metaDao metaDao;
     @Autowired
     private relationshipDao relationshipDao;
-
     @Autowired
-    private com.juity.blog.SERVICE.content.contentService contentService;
+    private contentService contentService;
 
     @Override
     @Cacheable(value = "metaCaches", key = "'metaList_' + #p0")

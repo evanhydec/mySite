@@ -7,9 +7,6 @@ import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.comment;
 import com.juity.blog.utils.APIResponse;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 
-@Api("评论管理")
 @RequestMapping("/admin/comments")
 @Controller
 public class commentController extends baseController {
@@ -29,13 +25,10 @@ public class commentController extends baseController {
     @Autowired
     private com.juity.blog.SERVICE.comment.commentService commentService;
 
-    @ApiOperation("进入评论列表页")
     @GetMapping(value = "")
     public String index(
-            @ApiParam(name = "page", value = "页数", required = false)
             @RequestParam(name = "page", required = false, defaultValue = "1")
                     int page,
-            @ApiParam(name = "limit", value = "每页条数", required = false)
             @RequestParam(name = "limit", required = false, defaultValue = "15")
                     int limit,
             HttpServletRequest request
@@ -45,11 +38,9 @@ public class commentController extends baseController {
         return "admin/comment_list";
     }
 
-    @ApiOperation("删除一条评论")
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse deleteComment(
-            @ApiParam(name = "coId", value = "评论编号", required = true)
             @RequestParam(name = "coId", required = true)
                     Integer coid
     ){
@@ -67,14 +58,11 @@ public class commentController extends baseController {
         return APIResponse.success();
     }
 
-    @ApiOperation("更改评论状态")
     @PostMapping(value = "/status")
     @ResponseBody
     public APIResponse changeStatus(
-            @ApiParam(name = "coId", value = "评论主键", required = true)
             @RequestParam(name = "coId", required = true)
                     Integer coid,
-            @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(name = "status", required = true)
                     String status
     ){

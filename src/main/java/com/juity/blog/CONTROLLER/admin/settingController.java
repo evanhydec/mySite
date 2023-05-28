@@ -7,8 +7,6 @@ import com.juity.blog.CONTROLLER.baseController;
 import com.juity.blog.POJO.option;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.GsonUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -22,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api("系统设置")
 @Controller
 @RequestMapping("/admin/setting")
 public class settingController extends baseController {
@@ -31,7 +28,6 @@ public class settingController extends baseController {
     @Autowired
     private com.juity.blog.SERVICE.log.logService logService;
 
-    @ApiOperation("进入设置页")
     @GetMapping("")
     public String toSetting(HttpServletRequest request){
         List<option> optionsList = optionService.getOptions();
@@ -43,7 +39,6 @@ public class settingController extends baseController {
         return "admin/setting";
     }
 
-    @ApiOperation("保存设置")
     @PostMapping("")
     @ResponseBody
     public APIResponse save(HttpServletRequest request){

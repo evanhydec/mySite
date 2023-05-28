@@ -8,9 +8,6 @@ import com.juity.blog.DTO.cond.metaCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.meta;
 import com.juity.blog.utils.APIResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Api("友链管理")
 @Controller
 @RequestMapping("/admin/links")
 public class linksController extends baseController {
@@ -27,7 +23,6 @@ public class linksController extends baseController {
     private com.juity.blog.SERVICE.meta.metaService metaService;
 
     @GetMapping("")
-    @ApiOperation("友链首页")
     public String index(HttpServletRequest request) {
         metaCond metaCond = new metaCond();
         metaCond.setType(Types.LINK.getType());
@@ -36,23 +31,17 @@ public class linksController extends baseController {
         return "admin/links";
     }
 
-    @ApiOperation("保存友链")
     @PostMapping("/save")
     @ResponseBody
     public APIResponse save(
-            @ApiParam(name = "title", value = "标签", required = true)
             @RequestParam(name = "title", required = true)
                     String title,
-            @ApiParam(name = "url", value = "链接", required = true)
             @RequestParam(name = "url", required = true)
                     String url,
-            @ApiParam(name = "logo", value = "logo", required = false)
             @RequestParam(name = "logo", required = false)
                     String logo,
-            @ApiParam(name = "mid", value = "meta编号", required = false)
             @RequestParam(name = "mid", required = false)
                     Integer mid,
-            @ApiParam(name = "sort", value = "sort", required = false)
             @RequestParam(name = "sort", required = false, defaultValue = "0")
                     int sort
     ){
@@ -76,11 +65,9 @@ public class linksController extends baseController {
         return APIResponse.success();
     }
 
-    @ApiOperation("删除友链")
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse delete(
-            @ApiParam(name = "mid", value = "meta主键", required = true)
             @RequestParam(name = "mid", required = true)
                     int mid
     ) {

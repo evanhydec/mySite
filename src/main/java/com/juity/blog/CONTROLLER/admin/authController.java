@@ -8,9 +8,6 @@ import com.juity.blog.POJO.user;
 import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.IPKit;
 import com.juity.blog.utils.TaleUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Api("登录相关接口")
 @Controller
 @RequestMapping("/admin")
 public class authController extends baseController {
@@ -37,25 +33,20 @@ public class authController extends baseController {
     @Autowired
     private com.juity.blog.SERVICE.log.logService logService;
 
-    @ApiOperation("跳转登录页")
     @GetMapping(value = {"","/login"})
     public String login(){
         return "admin/login";
     }
 
-    @ApiOperation("登录")
     @PostMapping(value = "/login")
     @ResponseBody
     public APIResponse toLogin(
             HttpServletRequest request,
             HttpServletResponse response,
-            @ApiParam(name = "username", value = "用户名", required = true)
             @RequestParam(name = "username", required = true)
                     String username,
-            @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam(name = "password", required = true)
                     String password,
-            @ApiParam(name = "remeber_me", value = "记住我", required = false)
             @RequestParam(name = "remeber_me", required = false)
                     String remeber_me
     ){

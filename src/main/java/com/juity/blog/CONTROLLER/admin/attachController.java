@@ -11,9 +11,6 @@ import com.juity.blog.utils.APIResponse;
 import com.juity.blog.utils.Commons;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +24,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
-@Api("附件上传管理")
 @Controller
 @RequestMapping("/admin/attach")
 public class attachController {
@@ -39,13 +35,10 @@ public class attachController {
     private com.juity.blog.utils.qiniu qiniu;
 
 
-    @ApiOperation("附件首页")
     @GetMapping("")
     public String index(
-            @ApiParam(name = "page", value = "页数", required = false)
             @RequestParam(name = "page", required = false, defaultValue = "1")
             int page,
-            @ApiParam(name = "limit", value = "条数", required = false)
             @RequestParam(name = "limit", required = false, defaultValue = "12")
             int limit,
             HttpServletRequest request
@@ -57,12 +50,10 @@ public class attachController {
         return "admin/attach";
     }
 
-    @ApiOperation("markdown文件上传")
     @PostMapping("/uploadfile")
     public void fileUpLoadToTencentCloud(
             HttpServletRequest request,
             HttpServletResponse response,
-            @ApiParam(name = "editormd-image-file", value = "文件数组", required = true)
             @RequestParam(name = "editormd-image-file", required = true)
             MultipartFile file
     ) {
@@ -97,13 +88,11 @@ public class attachController {
         }
     }
 
-    @ApiOperation("多文件上传")
     @PostMapping(value = "upload")
     @ResponseBody
     public APIResponse<Void> uploadfilesUploadToCloud(
             HttpServletRequest request,
             HttpServletResponse response,
-            @ApiParam(name = "file", value = "文件数组", required = true)
             @RequestParam(name = "file", required = true)
             MultipartFile[] files
     ) {
@@ -135,11 +124,9 @@ public class attachController {
         }
     }
 
-    @ApiOperation("删除文件")
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse deleteFileInfo(
-            @ApiParam(name = "id", value = "文件主键", required = true)
             @RequestParam(name = "id", required = true)
             Integer id,
             HttpServletRequest request
