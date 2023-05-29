@@ -1,6 +1,7 @@
 package com.juity.blog.utils;
 
 import com.juity.blog.CONSTANT.webConst;
+import com.juity.blog.POJO.attach;
 import com.juity.blog.POJO.content;
 import com.github.pagehelper.PageInfo;
 import com.vdurmont.emoji.EmojiParser;

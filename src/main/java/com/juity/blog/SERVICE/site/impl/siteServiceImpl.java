@@ -9,6 +9,7 @@ import com.juity.blog.DTO.archiveDto;
 import com.juity.blog.DTO.cond.commentCond;
 import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.DTO.statisticDto;
+import com.juity.blog.POJO.attach;
 import com.juity.blog.POJO.comment;
 import com.juity.blog.POJO.content;
 import com.juity.blog.SERVICE.site.siteService;
@@ -18,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,7 +36,7 @@ public class siteServiceImpl implements siteService {
     @Autowired
     private metaDao metaDao;
     @Autowired
-    private attachDao attachDao;
+    private MongoTemplate mongoTemplate;
     @Override
     public List<comment> getComments(int limit) {
         if (limit < 0 || limit > 10){
@@ -55,13 +58,13 @@ public class siteServiceImpl implements siteService {
     @Override
     public statisticDto getStatistics() {
         //文章总数
-        Long artices = contentDao.getArticleCount();
+        Long articles = contentDao.getArticleCount();
         Long comments = commentDao.getCommentsCount();
         Long links = metaDao.getMetasCountByType(Types.LINK.getType());
-        Long atts = attachDao.getAttachesCount();
+        long attaches = mongoTemplate.count(new Query(), attach.class);
         statisticDto rs = new statisticDto();
-        rs.setArticles(artices);
-        rs.setAttaches(atts);
+        rs.setArticles(articles);
+        rs.setAttaches(attaches);
         rs.setComments(comments);
         rs.setLinks(links);
         return rs;

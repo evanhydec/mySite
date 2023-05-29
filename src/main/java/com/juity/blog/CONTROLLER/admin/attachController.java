@@ -44,7 +44,7 @@ public class attachController {
             int limit,
             HttpServletRequest request
     ) {
-        PageInfo<attachDto> attaches = attachService.getAttaches(page, limit);
+        PageInfo<attach> attaches = attachService.getAttaches(page, limit);
         request.setAttribute("attaches", attaches);
         request.setAttribute(Types.ATTACH_URL.getType(), Commons.site_option(Types.ATTACH_URL.getType(), Commons.site_url()));
         request.setAttribute("max_file_size", webConst.MAX_FILE_SIZE / 1024);
@@ -132,11 +132,10 @@ public class attachController {
             Integer id
     ) {
         try {
-            attach attAch = attachService.getAttachById(id);
-            if (null == attAch)
+            attach attach = attachService.deleteAttach(id);
+            if (null == attach)
                 throw BusinessException.withErrorCode(ErrorConstant.Att.DELETE_ATT_FAIL + ": 文件不存在");
-            attachService.deleteAttach(id);
-            qiniu.delete(attAch.getName());
+            qiniu.delete(attach.getName());
             return APIResponse.success();
         } catch (Exception e) {
             e.printStackTrace();

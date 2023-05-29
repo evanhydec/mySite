@@ -1,12 +1,25 @@
 package com.juity.blog.POJO;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
+@Document("attach")
 public class attach {
+    @Field("aid")
     private Integer id;
+    @Field("name")
     private String name;
+    @Field("type")
     private String type;
+    @Field("key")
     private String key;
+    @Field("author_id")
     private Integer authorId;
-    private Integer created;
+    @Field("created")
+    private Date created;
 
     @Override
     public String toString() {
@@ -60,11 +73,11 @@ public class attach {
         this.authorId = authorId;
     }
 
-    public Integer getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Integer created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 }
