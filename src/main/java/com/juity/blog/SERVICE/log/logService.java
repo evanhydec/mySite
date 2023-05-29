@@ -3,7 +3,9 @@ package com.juity.blog.SERVICE.log;
 import com.juity.blog.POJO.log;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface logService {
-    PageInfo<log> getLogs(int pageNum, int pageSize);
+    List<log> getLogs(int pageNum, int pageSize);
     void addLog(String action, String data, String ip, Integer authorId);
 }

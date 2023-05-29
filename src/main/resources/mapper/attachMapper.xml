@@ -94,12 +94,9 @@
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMNS"/>
-            <include refid="REL_USER_COLUMNS"/>
         </trim>
         FROM
             <include refid="BASE_TABLE"/> AS aa
-            LEFT JOIN <include refid="TABLE_USER"/> AS u
-            ON aa.authorId = u.uid
         WHERE aa.id = #{id, jdbcType=INTEGER}
     </select>
 
@@ -107,12 +104,9 @@
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMNS"/>
-            <include refid="REL_USER_COLUMNS"/>
         </trim>
         FROM
         <include refid="BASE_TABLE"/> AS aa
-        LEFT JOIN <include refid="TABLE_USER"/> AS u
-        ON aa.authorId = u.uid
         ORDER BY aa.created DESC
     </select>
 

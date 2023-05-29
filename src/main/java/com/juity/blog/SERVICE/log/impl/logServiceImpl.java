@@ -6,21 +6,27 @@ import com.juity.blog.SERVICE.log.logService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class logServiceImpl implements logService {
     @Autowired
-    private logDao logDao;
+    private MongoTemplate mongoTemplate;
 
     @Override
-    public PageInfo<log> getLogs(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<log> logs = logDao.getLogs();
-        PageInfo<log> pageInfo = new PageInfo<>(logs);
-        return pageInfo;
+    public List<log> getLogs(int pageNum, int pageSize) {
+        int offset = pageSize * (pageNum - 1);
+        Query query = new Query().with(Sort.by(Sort.Order.desc("created")))
+                .skip(offset)
+                .limit(pageSize);
+        return mongoTemplate.find(query, log.class);
     }
 
     @Override
@@ -30,6 +36,7 @@ public class logServiceImpl implements logService {
         log.setAuthorId(authorId);
         log.setIp(ip);
         log.setData(data);
-        logDao.addLog(log);
+        log.setCreated(new Date());
+        mongoTemplate.insert(log);
     }
 }

@@ -48,12 +48,11 @@ public class indexController extends baseController {
         List<content> contents = siteService.getNewArticles(5);
         statisticDto statistics = siteService.getStatistics();
         // 取最新的20条日志
-        PageInfo<log> logs = logService.getLogs(1, 5);
-        List<log> list = logs.getList();
+        List<log> logs = logService.getLogs(1, 5);
         request.setAttribute("comments", comments);
         request.setAttribute("articles", contents);
         request.setAttribute("statistics", statistics);
-        request.setAttribute("logs", list);
+        request.setAttribute("logs", logs);
         return "admin/index";
     }
 

@@ -1,31 +1,33 @@
 package com.juity.blog.POJO;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
+@Document("log")
 public class log {
-    private Integer id;
+    @Field("action")
     private String action;
+    @Field("data")
     private String data;
+    @Field("author_id")
     private Integer authorId;
+    @Field("ip")
     private String ip;
-    private Integer created;
+    @Field("created")
+    private Date created;
 
     @Override
     public String toString() {
         return "log{" +
-                "id=" + id +
                 ", action='" + action + '\'' +
                 ", data='" + data + '\'' +
                 ", authorId=" + authorId +
                 ", ip=" + ip +
                 ", created=" + created +
                 '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getAction() {
@@ -60,19 +62,18 @@ public class log {
         this.ip = ip;
     }
 
-    public Integer getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Integer created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
     public log() {
     }
 
-    public log(Integer id, String action, String data, Integer authorId, String ip, Integer created) {
-        this.id = id;
+    public log(String action, String data, Integer authorId, String ip, Date created) {
         this.action = action;
         this.data = data;
         this.authorId = authorId;

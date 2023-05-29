@@ -160,6 +160,20 @@ public class Commons {
     }
 
     /**
+     * 格式化date为日期
+     *
+     * @param time
+     * @param patten
+     * @return
+     */
+    public static String fmtdate(Date time, String patten) {
+        if (time != null && StringUtils.isNotBlank(patten)) {
+            return DateKit.dateFormat(time, patten);
+        }
+        return "";
+    }
+
+    /**
      * 英文格式的日期
      * @param unixTime
      * @return

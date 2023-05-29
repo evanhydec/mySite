@@ -699,7 +699,4 @@ public class DateKit {
         cale.set(Calendar.DAY_OF_YEAR, 0);
         return cale.getTime();
     }
-
-
-
 }

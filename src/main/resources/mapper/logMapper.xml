@@ -7,7 +7,7 @@
         t_logs
     </sql>
     <sql id="BASE_COLUMNS">
-        l.id, l.action, l.data, l.authorId, l.ip, l.created
+        l.action, l.data, l.authorId, l.ip, l.created
     </sql>
 
     <insert id="addLog" parameterType="com.juity.blog.POJO.log">

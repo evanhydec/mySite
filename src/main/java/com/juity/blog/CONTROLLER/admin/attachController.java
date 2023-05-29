@@ -94,7 +94,7 @@ public class attachController {
     public APIResponse<Void> uploadfilesUploadToCloud(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(name = "file", required = true)
+            @RequestParam(name = "file")
             MultipartFile[] files
     ) {
         //文件上传
@@ -128,9 +128,8 @@ public class attachController {
     @PostMapping(value = "/delete")
     @ResponseBody
     public APIResponse deleteFileInfo(
-            @RequestParam(name = "id", required = true)
-            Integer id,
-            HttpServletRequest request
+            @RequestParam(name = "id")
+            Integer id
     ) {
         try {
             attach attAch = attachService.getAttachById(id);
