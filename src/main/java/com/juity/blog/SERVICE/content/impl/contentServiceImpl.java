@@ -82,8 +82,8 @@ public class contentServiceImpl implements contentService {
         String tags = content.getTags();
         String categories = content.getCategories();
         int cid = content.getCid();
-        updateContentByCid(content);
         metaService.MinusMetas(cid);
+        updateContentByCid(content);
         metaService.addMetas(cid, tags, Types.TAG.getType());
         metaService.addMetas(cid, categories, Types.CATEGORY.getType());
     }
