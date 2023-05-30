@@ -58,7 +58,13 @@ public class MongoWrapper extends Query {
                 String mongoField = field.getAnnotation(org.springframework.data.mongodb.core.mapping.Field.class).value();
                 field.setAccessible(true);
                 if (field.get(cond) != null) {
-                    innerUpdate.set(mongoField, field.get(cond));
+                    if (field.isAnnotationPresent(MongoCond.class) && field.getAnnotation(MongoCond.class).value() == 3) {
+                        // 增量更新
+                        innerUpdate.inc(mongoField, Integer.valueOf(field.get(cond).toString()));
+                    } else {
+                        // 指定更新
+                        innerUpdate.set(mongoField, field.get(cond));
+                    }
                 }
             }
         }
@@ -67,7 +73,8 @@ public class MongoWrapper extends Query {
 
     public enum typeEnum {
         EQUAL(1, "等值查询"),
-        MATCH(2, "模糊匹配");
+        MATCH(2, "模糊匹配"),
+        INC(3, "增量更新");
         private Integer code;
         private String name;
 

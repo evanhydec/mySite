@@ -57,11 +57,13 @@ public class commentServiceImpl implements commentService {
         if (coId == null)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         content article = contentService.getArticleById(commentDao.getCommentById(coId).getCid());
-        mongoTemplate.updateFirst(
-                new Query().addCriteria(Criteria.where("cid").is(article.getCid())),
-                new Update().inc("comment_num", -1),
-                content.class);
-        commentDao.delComment(coId);
+        if (article != null) {
+            mongoTemplate.updateFirst(
+                    new Query().addCriteria(Criteria.where("cid").is(article.getCid())),
+                    new Update().inc("comment_num", -1),
+                    content.class);
+            commentDao.delComment(coId);
+        }
     }
 
     @Override
@@ -112,11 +114,7 @@ public class commentServiceImpl implements commentService {
 
             content temp = new content();
             temp.setCid(article.getCid());
-            Integer count = article.getCommentsNum();
-            if (null == count) {
-                count = 0;
-            }
-            temp.setCommentsNum(count + 1);
+            temp.setCommentsNum(1);
             contentService.updateContentByCid(temp);
         }
     }

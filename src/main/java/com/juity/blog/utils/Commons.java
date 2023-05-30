@@ -182,8 +182,18 @@ public class Commons {
     public static String fmtdate_en(Integer unixTime){
         String fmtdate = fmtdate(unixTime, "d,MMM,yyyy");
         String[] dateArr = fmtdate.split(",");
-        String rs = "<span>" + dateArr[0] + "</span> " + dateArr[1] + "  " + dateArr[2];
-        return rs;
+        return "<span>" + dateArr[0] + "</span> " + dateArr[1] + "  " + dateArr[2];
+    }
+
+    /**
+     * 英文格式的日期
+     * @param time
+     * @return
+     */
+    public static String fmtdate_en(Date time) {
+        String fmtdate = DateKit.dateFormat(time, "d,MMM,yyyy");
+        String[] dateArr = fmtdate.split(",");
+        return "<span>" + dateArr[0] + "</span> " + dateArr[1] + "  " + dateArr[2];
     }
 
 

@@ -4,7 +4,6 @@ import com.juity.blog.CONSTANT.ErrorConstant;
 import com.juity.blog.CONSTANT.Types;
 import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.DAO.commentDao;
-import com.juity.blog.DAO.relationshipDao;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.MongoWrapper;
 import com.juity.blog.POJO.comment;
@@ -25,7 +24,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,8 +31,6 @@ public class contentServiceImpl implements contentService {
     @Lazy
     @Autowired
     private metaService metaService;
-    @Autowired
-    private relationshipDao relationshipDao;
     @Autowired
     private commentDao commentDao;
     @Autowired
@@ -70,13 +66,13 @@ public class contentServiceImpl implements contentService {
         if (content.getContent().length() > webConst.MAX_TEXT_COUNT)
             throw BusinessException.withErrorCode(ErrorConstant.Article.CONTENT_IS_TOO_LONG);
 
-        //标签和分类
-        String tags = content.getTags();
-        String categories = content.getCategories();
         content.setCid(49);
         mongoTemplate.insert(content);
 
+        //标签和分类
         int cid = content.getCid();
+        String tags = content.getTags();
+        String categories = content.getCategories();
         metaService.addMetas(cid, tags, Types.TAG.getType());
         metaService.addMetas(cid, categories, Types.CATEGORY.getType());
     }
@@ -87,7 +83,7 @@ public class contentServiceImpl implements contentService {
         String categories = content.getCategories();
         int cid = content.getCid();
         updateContentByCid(content);
-        relationshipDao.delRelationshipByCid(cid);
+        metaService.MinusMetas(cid);
         metaService.addMetas(cid, tags, Types.TAG.getType());
         metaService.addMetas(cid, categories, Types.CATEGORY.getType());
     }
@@ -97,7 +93,7 @@ public class contentServiceImpl implements contentService {
         if (null == cid)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         mongoTemplate.remove(new Query().addCriteria(Criteria.where("cid").is(cid)), content.class);
-        relationshipDao.delRelationshipByCid(cid);
+        metaService.MinusMetas(cid);
         List<comment> comments = commentDao.getCommentsByCid(cid);
         comments.forEach(
             comment -> {

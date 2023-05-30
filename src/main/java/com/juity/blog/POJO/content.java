@@ -46,8 +46,10 @@ public class content {
     @MongoCond(2)
     private String categories;
     @Field("hits")
+    @MongoCond(3)
     private Integer hits;
     @Field("comment_num")
+    @MongoCond(3)
     private Integer commentsNum;
     @Field("allow_comment")
     private Integer allowComment;

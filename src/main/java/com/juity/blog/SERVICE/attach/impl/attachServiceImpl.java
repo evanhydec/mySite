@@ -1,15 +1,11 @@
 package com.juity.blog.SERVICE.attach.impl;
 
 import com.juity.blog.CONSTANT.ErrorConstant;
-import com.juity.blog.DAO.attachDao;
-import com.juity.blog.DTO.attachDto;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.attach;
 import com.juity.blog.SERVICE.attach.attachService;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.juity.blog.utils.Tools;
-import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 public class attachServiceImpl implements attachService {

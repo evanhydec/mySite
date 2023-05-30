@@ -17,4 +17,7 @@ public interface metaDao {
     List<meta> getMetaByCond(metaCond metacond);
     Long getMetasCountByType(@Param("type")String type);
     List<metaDto> selectFromSql(Map<String, Object> paraMap);
+
+    int addCount(@Param("mid") Integer mid);
+    int minusCount(@Param("name") String name, @Param("type") String type);
 }

@@ -56,29 +56,4 @@ public class siteServiceImpl implements siteService {
         rs.setLinks(links);
         return rs;
     }
-
-//    private void parseArchives(List<archiveDto> archives, contentCond contentCond) {
-//        if (null != archives){
-//            archives.forEach(archive -> {
-//                String date = archive.getDate();
-//                Date sd = DateKit.dateFormat(date, "yyyy年MM月");
-//                int start = DateKit.getUnixTimeByDate(sd);
-//                int end = DateKit.getUnixTimeByDate(DateKit.dateAdd(DateKit.INTERVAL_MONTH, sd, 1)) - 1;
-//                contentCond cond = new contentCond();
-//                cond.setStartTime(start);
-//                cond.setEndTime(end);
-//                cond.setType(contentCond.getType());
-//                List<content> contents = contentDao.getArticlesByCond(cond);
-//                archive.setArticles(contents);
-//            });
-//        }
-//    }
-
-//    @Override
-//    @Cacheable(value = "siteCache", key = "'archives_' + #p0")
-//    public List<archiveDto> getArchives(contentCond contentCond) {
-//        List<archiveDto> archives = contentDao.getArchive(contentCond);
-//        parseArchives(archives, contentCond);
-//        return archives;
-//    }
 }

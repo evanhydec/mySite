@@ -6,9 +6,6 @@
     <sql id="BASE_TABLE">
         t_metas
     </sql>
-    <sql id="RELATION_SHIP_TABLE">
-        <include refid="com.juity.blog.DAO.relationshipDao.BASE_TABLE"/>
-    </sql>
 
     <sql id="BASE_COLUMNS">
         m.mid, m.name, m.slug, m.type, m.description, m.sort, m.parent
@@ -23,6 +20,11 @@
         <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
             #{name}, #{slug}, #{type},#{description}, #{sort}, #{parent}
         </trim>
+    </insert>
+    <insert id="addCount">
+        update <include refid="BASE_TABLE"/>
+        set `count` = `count` + 1
+        where mid = #{mid}
     </insert>
 
     <delete id="delMetaById">
@@ -56,6 +58,11 @@
             </if>
         </set>
         WHERE mid = #{mid}
+    </update>
+    <update id="minusCount">
+        update <include refid="BASE_TABLE"/>
+        set `count` = `count` - 1
+        where `name` = #{name} and `type` = #{type}
     </update>
 
     <select id="getMetaById" resultType="com.juity.blog.POJO.meta">
@@ -109,12 +116,10 @@
 
     <select id="selectFromSql" resultMap="metaDto" parameterType="Map">
         select
-            a.*,count(b.cid) as count
+            *
         from
-            (select * from <include refid="BASE_TABLE"/> where type = #{type}) AS a
-        left join
-            <include refid="RELATION_SHIP_TABLE"/> AS b on a.mid = b.mid
-        group by a.mid
+            <include refid="BASE_TABLE"/>
+        where type = #{type}
         order by count desc
         limit #{limit}
     </select>

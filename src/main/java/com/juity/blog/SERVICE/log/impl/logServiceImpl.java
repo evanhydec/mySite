@@ -1,17 +1,13 @@
 package com.juity.blog.SERVICE.log.impl;
 
-import com.juity.blog.DAO.logDao;
 import com.juity.blog.POJO.log;
 import com.juity.blog.SERVICE.log.logService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 

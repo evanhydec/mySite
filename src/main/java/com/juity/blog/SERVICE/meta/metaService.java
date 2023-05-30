@@ -10,6 +10,7 @@ import java.util.List;
 public interface metaService {
     List<metaDto> getMetaList(String type, int limit);
     void addMetas(Integer cid,String names,String type);
+    void MinusMetas(Integer cid);
     List<meta> getMetas(metaCond metaCond);
     void updateMeta(meta meta);
     void addMeta(meta meta);
