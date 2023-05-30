@@ -12,5 +12,5 @@ public interface siteService {
     List<comment> getComments(int limit);
     List<content> getNewArticles(int limit);
     statisticDto getStatistics();
-    List<archiveDto> getArchives(contentCond contentCond);
+//    List<archiveDto> getArchives(contentCond contentCond);
 }

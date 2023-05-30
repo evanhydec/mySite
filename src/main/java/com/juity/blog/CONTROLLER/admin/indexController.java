@@ -47,7 +47,7 @@ public class indexController extends baseController {
         List<comment> comments = siteService.getComments(5);
         List<content> contents = siteService.getNewArticles(5);
         statisticDto statistics = siteService.getStatistics();
-        // 取最新的20条日志
+        // 取最新的5条日志
         List<log> logs = logService.getLogs(1, 5);
         request.setAttribute("comments", comments);
         request.setAttribute("articles", contents);

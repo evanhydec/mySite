@@ -1,22 +1,19 @@
 package com.juity.blog;
 
 import com.juity.blog.DAO.attachDao;
-import com.juity.blog.DAO.logDao;
+import com.juity.blog.DAO.contentDao;
 import com.juity.blog.DTO.attachDto;
+import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.POJO.attach;
-import com.juity.blog.POJO.log;
-import com.mongodb.client.result.DeleteResult;
+import com.juity.blog.POJO.content;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +26,9 @@ public class moveDataTest {
 
     @Autowired
     private attachDao attachDao;
+
+    @Autowired
+    private contentDao contentDao;
 
     @Test
     public void moveLogs() {
@@ -50,20 +50,30 @@ public class moveDataTest {
         List<attachDto> attachDtos = attachDao.getAttaches();
         List<attach> attaches = new ArrayList<>();
         attachDtos.forEach(attachDto -> {
-            for (int i = 0; i < 20; i++) {
                 attach attach = new attach();
                 BeanUtils.copyProperties(attachDto, attach, "created");
-                attach.setId(i);
                 attach.setCreated(new Date(attachDto.getCreated() * 1000L));
                 attaches.add(attach);
-            }
         });
         mongoTemplate.insertAll(attaches);
     }
 
     @Test
-    public void testRemove() {
-        attach attach = mongoTemplate.findAndRemove(new Query().addCriteria(Criteria.where("aid").is(13)), attach.class);
-        System.out.println(attach);
+    public void moveArticles() {
+        boolean exist = mongoTemplate.collectionExists("article");
+        if (exist) {
+            mongoTemplate.dropCollection("article");
+            mongoTemplate.createCollection("article");
+        }
+        List<content> articlesByCond = contentDao.getArticlesByCond(new contentCond());
+        articlesByCond.forEach(article-> {
+            article.setAuthorId(1);
+            article.setAuthorName("evanhydec");
+            article.setUpdateTime(new Date(article.getModified() * 1000L));
+            article.setCreateTime(new Date(article.getCreated() * 1000L));
+            article.setCreated(null);
+            article.setModified(null);
+        });
+        mongoTemplate.insertAll(articlesByCond);
     }
 }

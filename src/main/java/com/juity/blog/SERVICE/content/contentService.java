@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 
 public interface contentService {
-    PageInfo<content> getArticlesByCond(contentCond contentCond,int page,int limit);
+    PageInfo<content> getArticlesByCond(content contentCond,int page,int limit);
     void addArticle(content content);
     void updateArticle(content content);
     void delArticleById(Integer cid);

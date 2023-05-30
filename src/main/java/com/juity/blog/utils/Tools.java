@@ -1,5 +1,7 @@
 package com.juity.blog.utils;
 
+import com.github.pagehelper.PageInfo;
+import com.juity.blog.POJO.attach;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -11,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * 工具类
@@ -85,5 +88,40 @@ public class Tools {
         }
 
         return false;
+    }
+
+    /***
+     *
+     * @param page      页号
+     * @param limit     页大小
+     * @param sum       总量
+     * @param tClass    返回类型
+     * @return          pageInfo
+     * @param <T>       类型
+     */
+    public static <T> PageInfo<T> buildPage(int page, int limit, int sum, Class<T> tClass) {
+        // 默认值
+        PageInfo<T> res = new PageInfo<>();
+        res.setPageNum(1);
+        res.setPageSize(limit);
+        res.setPages(1);
+
+        int pages = (sum - 1) / limit + 1;
+        if (sum == 0 || page > pages || page <= 0) {
+            return res;
+        }
+
+        res.setPages(pages);
+        res.setPageNum(page);
+        if (page > 1) {
+            res.setHasPreviousPage(true);
+            res.setPrePage(page - 1);
+        }
+        if (page < pages) {
+            res.setHasNextPage(true);
+            res.setNextPage(page + 1);
+        }
+        res.setNavigatepageNums(IntStream.rangeClosed(1, pages).toArray());
+        return res;
     }
 }

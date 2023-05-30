@@ -8,6 +8,7 @@ import com.juity.blog.POJO.attach;
 import com.juity.blog.SERVICE.attach.attachService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.juity.blog.utils.Tools;
 import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,30 +28,13 @@ public class attachServiceImpl implements attachService {
 
     @Override
     public PageInfo<attach> getAttaches(Integer page, Integer limit) {
-        PageInfo<attach> res = new PageInfo<>();
-        res.setPageNum(1);
-        res.setPageSize(limit);
-        res.setPages(1);
         int sum = (int) mongoTemplate.count(new Query(), attach.class);
-        int pages = (sum - 1) / limit + 1;
-        if (sum == 0 || page > pages || page <= 0) {
-            return res;
-        }
+        PageInfo<attach> attachPageInfo = Tools.buildPage(page, limit, sum, attach.class);
 
-        res.setPages(pages);
         int offset = limit * (page - 1);
-        if (page > 1) {
-            res.setHasPreviousPage(true);
-            res.setPrePage(page - 1);
-        }
-        if (page < pages) {
-            res.setHasNextPage(true);
-            res.setNextPage(page + 1);
-        }
-        res.setNavigatepageNums(IntStream.rangeClosed(1, pages).toArray());
         List<attach> attaches = mongoTemplate.find(new Query().with(Sort.by(Sort.Order.desc("created"))).skip(offset).limit(limit), attach.class);
-        res.setList(attaches);
-        return res;
+        attachPageInfo.setList(attaches);
+        return attachPageInfo;
     }
 
     @Override

@@ -1,23 +1,64 @@
 package com.juity.blog.POJO;
 
+import com.juity.blog.ANNOTATION.MongoCond;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
+
+@Document("article")
 public class content {
+
+    @Field("cid")
+    @MongoCond()
     private Integer cid;
+    @Field("title")
+    @MongoCond(2)
     private String title;
+    @Field("title_pic")
     private String titlePic;
+    @Field("slug")
     private String slug;
     private Integer created;
     private Integer modified;
+    @Field("update_time")
+    private Date updateTime;
+    @Field("create_time")
+    private Date createTime;
+    @Field("content")
+    @MongoCond(2)
     private String content;
+    @Field("author_id")
     private Integer authorId;
+    @Field("author_name")
+    private String authorName;
+    @Field("type")
+    @MongoCond()
     private String type;
+    @Field("status")
+    @MongoCond()
     private String status;
+    @Field("tags")
+    @MongoCond(2)
     private String tags;
+    @Field("categories")
+    @MongoCond(2)
     private String categories;
+    @Field("hits")
     private Integer hits;
+    @Field("comment_num")
     private Integer commentsNum;
+    @Field("allow_comment")
     private Integer allowComment;
+    @Field("allow_ping")
     private Integer allowPing;
+    @Field("allow_feed")
     private Integer allowFeed;
+
+    private Date startTime;
+
+    private Date endTime;
 
     @Override
     public String toString() {
@@ -40,6 +81,32 @@ public class content {
                 ", allowPing=" + allowPing +
                 ", allowFeed=" + allowFeed +
                 '}';
+    }
+
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public Integer getCid() {

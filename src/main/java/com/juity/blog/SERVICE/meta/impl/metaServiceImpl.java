@@ -49,7 +49,7 @@ public class metaServiceImpl implements metaService {
     @Override
     public void addMetas(Integer cid, String names, String type) {
         if (null == cid)
-            throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
+             BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         if (StringUtils.isNotBlank(names) && StringUtils.isNotBlank(type)) {
             String[] nameArr = StringUtils.split(names, ",");
             for (String name : nameArr) {

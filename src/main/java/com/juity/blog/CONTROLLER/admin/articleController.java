@@ -2,12 +2,14 @@ package com.juity.blog.CONTROLLER.admin;
 
 import com.juity.blog.CONSTANT.LogActions;
 import com.juity.blog.CONSTANT.Types;
+import com.juity.blog.CONSTANT.webConst;
 import com.juity.blog.CONTROLLER.baseController;
 import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.DTO.cond.metaCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.content;
 import com.juity.blog.POJO.meta;
+import com.juity.blog.POJO.user;
 import com.juity.blog.SERVICE.content.contentService;
 import com.juity.blog.SERVICE.log.logService;
 import com.juity.blog.SERVICE.meta.metaService;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -41,7 +44,7 @@ public class articleController extends baseController {
             @RequestParam(name = "limit", required = false, defaultValue = "15")
             int limit
     ) {
-        PageInfo<content> articles = contentService.getArticlesByCond(new contentCond(), page, limit);
+        PageInfo<content> articles = contentService.getArticlesByCond(new content(), page, limit);
         request.setAttribute("articles", articles);
         return "admin/article_list";
     }
@@ -76,9 +79,13 @@ public class articleController extends baseController {
             @RequestParam(name = "categories", required = false, defaultValue = "默认分类")
             String categories,
             @RequestParam(name = "allowComment")
-            Boolean allowComment
+            Boolean allowComment,
+            HttpServletRequest request
     ) {
         content contentDomain = new content();
+        user user = (user) request.getSession().getAttribute(webConst.LOGIN_SESSION_KEY);
+        contentDomain.setAuthorId(user.getUid());
+        contentDomain.setAuthorName(user.getScreenName());
         contentDomain.setTitle(title);
         contentDomain.setTitlePic(titlePic);
         contentDomain.setSlug(slug);
@@ -88,6 +95,13 @@ public class articleController extends baseController {
         contentDomain.setTags(type.equals(Types.ARTICLE.getType()) ? tags : null);
         contentDomain.setCategories(type.equals(Types.ARTICLE.getType()) ? categories : null);
         contentDomain.setAllowComment(allowComment ? 1 : 0);
+        contentDomain.setCommentsNum(0);
+        contentDomain.setHits(0);
+        contentDomain.setAllowPing(1);
+        contentDomain.setAllowFeed(1);
+        Date now = new Date();
+        contentDomain.setCreateTime(now);
+        contentDomain.setUpdateTime(now);
         contentService.addArticle(contentDomain);
         return APIResponse.success();
     }

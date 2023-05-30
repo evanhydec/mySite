@@ -4,7 +4,6 @@ package com.juity.blog.CONTROLLER;
 import com.juity.blog.CONSTANT.ErrorConstant;
 import com.juity.blog.CONSTANT.Types;
 import com.juity.blog.CONSTANT.webConst;
-import com.juity.blog.DTO.cond.contentCond;
 import com.juity.blog.EXCEPTION.BusinessException;
 import com.juity.blog.POJO.comment;
 import com.juity.blog.POJO.content;
@@ -15,9 +14,14 @@ import com.juity.blog.utils.IPKit;
 import com.juity.blog.utils.PatternKit;
 import com.juity.blog.utils.TaleUtils;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.client.result.UpdateResult;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +37,9 @@ public class homeController extends baseController {
     private contentService contentService;
     @Autowired
     private commentService commentService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
 
     @GetMapping(value = {"/about", "/about/index"})
@@ -62,7 +69,7 @@ public class homeController extends baseController {
             int limit
     ) {
         p = p < 0 || p > webConst.MAX_PAGE ? 1 : p;
-        contentCond contentCond = new contentCond();
+        content contentCond = new content();
         contentCond.setType(Types.ARTICLE.getType());
         PageInfo<content> articles = contentService.getArticlesByCond(contentCond, p, limit);
         request.setAttribute("articles", articles);//文章列表
@@ -80,27 +87,27 @@ public class homeController extends baseController {
     ) {
         content article = contentService.getArticleById(cid);
         request.setAttribute("article", article);
-        this.updateArticleHit(article.getCid(), article.getHits());
+        if (article != null && article.getCid() != null) {
+            this.updateArticleHit(article.getCid());
+        }
         List<comment> commentsPaginator = commentService.getCommentsById(cid);
         request.setAttribute("comments", commentsPaginator);
         request.setAttribute("active", "blog");
         return "site/blog-details";
     }
 
-    private void updateArticleHit(Integer cid, Integer chits) {
-        Integer hits = cache.hget("article", "hits");
-        if (chits == null) {
-            chits = 0;
-        }
+    private void updateArticleHit(Integer cid) {
+        String key = "article:" + cid;
+        Integer hits = cache.hget(key, "hits");
         hits = null == hits ? 1 : hits + 1;
         if (hits >= webConst.HIT_EXCEED) {
-            content temp = new content();
-            temp.setCid(cid);
-            temp.setHits(chits + hits);
-            contentService.updateContentByCid(temp);
-            cache.hset("article", "hits", 1);
+            mongoTemplate.updateFirst(
+                    new Query().addCriteria(Criteria.where("cid").is(cid)),
+                    new Update().inc("hits", hits),
+                    content.class);
+            cache.hset(key, "hits", 0);
         } else {
-            cache.hset("article", "hits", hits);
+            cache.hset(key, "hits", hits);
         }
     }
 
