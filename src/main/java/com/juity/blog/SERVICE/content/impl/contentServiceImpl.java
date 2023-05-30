@@ -92,8 +92,8 @@ public class contentServiceImpl implements contentService {
     public void delArticleById(Integer cid) {
         if (null == cid)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        mongoTemplate.remove(new Query().addCriteria(Criteria.where("cid").is(cid)), content.class);
         metaService.MinusMetas(cid);
+        mongoTemplate.remove(new Query().addCriteria(Criteria.where("cid").is(cid)), content.class);
         List<comment> comments = commentDao.getCommentsByCid(cid);
         comments.forEach(
             comment -> {
